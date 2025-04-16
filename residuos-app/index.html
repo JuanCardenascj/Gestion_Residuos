@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestión de Residuos - Login</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Gestión de Residuos</h1>
+
+    <div id="form-section">
+      <h2>Iniciar Sesión</h2>
+      <input type="email" id="loginEmail" placeholder="Correo electrónico" />
+      <input type="password" id="loginPassword" placeholder="Contraseña" />
+      <button onclick="login()">Ingresar</button>
+
+      <h2>Registrar Usuario</h2>
+      <input type="text" id="registerName" placeholder="Nombre completo" />
+      <input type="email" id="registerEmail" placeholder="Correo electrónico" />
+      <input type="password" id="registerPassword" placeholder="Contraseña" />
+      <select id="registerRole">
+        <option value="usuario">Usuario</option>
+        <option value="empresa">Empresa Recolectora</option>
+        <option value="admin">Administrador</option>
+      </select>
+      <button onclick="register()">Registrarse</button>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
