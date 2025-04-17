@@ -1,89 +1,140 @@
-/* Reset básico */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-  
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #e9f5ec;
-    margin: 0;
-    padding: 20px;
-    color: #333;
-  }
-  
-  .container {
-    max-width: 900px;
-    margin: 2rem auto;
-    background-color: white;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-  }
-  
-  h1, h2, h3, h4 {
-    margin-bottom: 1rem;
-    color: #2c3e50;
-  }
-  
-  input, select, button {
-    display: block;
-    width: 100%;
-    margin: 10px 0;
-    padding: 12px;
-    font-size: 1rem;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-  }
-  
-  input:focus, select:focus {
-    border-color: #2d8659;
-    outline: none;
-  }
-  
-  button {
-    background-color: #2d8659;
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  
-  button:hover {
-    background-color: #24694b;
-  }
-  
-  ul {
-    list-style: none;
-    padding-left: 0;
-    margin-top: 10px;
-  }
-  
-  ul li {
-    background: #f6faf7;
-    margin-bottom: 10px;
-    padding: 10px;
-    border-left: 5px solid #2d8659;
-    border-radius: 6px;
-  }
-  
-  ul li button {
-    width: auto;
-    display: inline-block;
-    margin-left: 10px;
-    font-size: 0.9rem;
-    padding: 6px 12px;
-  }
-  
-  canvas {
-    margin-bottom: 30px;
-    background: #ffffff;
-    border: 1px solid #eee;
-    border-radius: 10px;
-    padding: 10px;
-  }
-  
+/* ===================== GENERAL ===================== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+
+.logo-container {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.logo {
+  height: 60px;
+  max-height: 80px;
+  width: auto;
+}
+
+.watermark-logo {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  opacity: 0.2;
+  z-index: -1;
+  height: 100px;
+}
+
+body {
+  position: relative;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f7f7f7;
+  color: #006400;
+}
+
+.container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+h1, h2, h3, h4 {
+  color: #007200;
+}
+
+.hidden {
+  display: none;
+}
+
+/* ===================== FORMULARIOS ===================== */
+
+input, select, button {
+  display: block;
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #008000;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+input:focus, select:focus {
+  border-color: #007200;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+}
+
+button {
+  background-color: #38B000;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #70E000;
+}
+
+/* ===================== LISTAS ===================== */
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  background: #9EF01A;
+  padding: 0.8rem;
+  margin-bottom: 0.5rem;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+li button {
+  width: auto;
+  padding: 6px 12px;
+  margin-left: 5px;
+  font-size: 0.85rem;
+  background-color: #38B000;
+}
+
+li button:last-child {
+  background-color: #38B000;
+}
+
+/* ===================== DASHBOARD SECTIONS ===================== */
+
+#admin-section, #user-section, #empresa-section {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f9fbfc;
+}
+
+canvas {
+  margin-top: 1rem;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 10px;
+}
+
   hr {
     border: none;
     border-top: 1px solid #ddd;
