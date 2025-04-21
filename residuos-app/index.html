@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ARDI-MI ♻️ - Gestión de Residuos</title>
+  <title>Ardi-MI ♻️</title>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -22,9 +22,25 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
+      min-height: 100vh;      
     }
-    
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-image: url(/imagenes/Logo\ 1.1.png);
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 50%;
+      opacity: 0.20;
+      pointer-events: none;
+      z-index: -1;
+    }
+
     .container {
       width: 100%;
       max-width: 400px;
@@ -381,10 +397,10 @@
       <input type="date" id="collectionDate" required />
       <select id="wasteType" required>
         <option value="">Seleccione tipo de residuo</option>
-        <option value="organico">Orgánico 🍂</option>
-        <option value="inorganico">Inorgánico 🏗️</option>
-        <option value="reciclable">Reciclable ♻️</option>
-        <option value="peligroso">Peligroso ☣️</option>
+        <option value="organico">Orgánicos 🍂</option>
+        <option value="inorganico">Inorganicos 🏗️</option>
+        <option value="reciclable">Reciclables ♻️</option>
+        <option value="peligroso">Peligrosos ☣️</option>
       </select>
       <input type="number" id="wasteWeight" placeholder="Peso (kg)" min="0.1" step="0.1" required />
       <button onclick="createCollectionRequest()">Solicitar Recolección</button>
@@ -803,10 +819,10 @@ function editRequest(requestId) {
 
     // Datos de ejemplo para simular la base de datos
     const users = [
-      { id: 1, name: "Usuario Demo", email: "user@example.com", password: "123456", role: "user", phone: "1234567890", points: 150, whatsapp: true, status: 'active' },
+      { id: 1, name: "Usuario1 Demo", email: "user1@example.com", password: "123456", role: "user", phone: "1234567890", points: 150, whatsapp: true, status: 'active' },
       { id: 2, name: "Empresa Demo", email: "company@example.com", password: "123456", role: "company", phone: "0987654321", whatsapp: true, status: 'active' },
       { id: 3, name: "Admin Demo", email: "admin@example.com", password: "123456", role: "admin", phone: "5555555555", whatsapp: true, status: 'active' },
-      { id: 4, name: "Usuario 2", email: "user2@example.com", password: "123456", role: "user", phone: "1111111111", points: 75, whatsapp: false, status: 'active' }
+      { id: 4, name: "Usuario2 Demo", email: "user2@example.com", password: "123456", role: "user", phone: "1111111111", points: 75, whatsapp: false, status: 'active' }
     ];
     
     let collectionRequests = [
