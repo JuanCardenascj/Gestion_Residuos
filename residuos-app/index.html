@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ARDI-MI ♻️ - Login</title>
+  <title>ARDI-MI ♻️ - Gestión de Residuos</title>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -498,7 +498,7 @@
       { id: 2, userId: 1, date: "2025-05-20", type: "organico", weight: 3, points: 3, status: "pending" }
     ];
 
-    // Nuevos datos para vehículos
+    // Datos para vehículos
     let vehicles = [
       { id: 1, companyId: 2, plate: "ABC123", brand: "Toyota", model: "Hilux", capacity: 1500, type: "mediano", status: "active" },
       { id: 2, companyId: 2, plate: "DEF456", brand: "Mercedes", model: "Atego", capacity: 5000, type: "grande", status: "active" }
@@ -553,7 +553,9 @@
       }
       
       subscribe(observer) {
-        this.observers.push(observer);
+        if (!this.observers.includes(observer)) {
+          this.observers.push(observer);
+        }
       }
       
       unsubscribe(observer) {
@@ -561,15 +563,24 @@
       }
       
       notify(data) {
-        this.observers.forEach(observer => observer.update(data));
+        this.observers.forEach(observer => {
+          try {
+            observer.update(data);
+          } catch (error) {
+            console.error("Error en notificación:", error);
+          }
+        });
       }
     }
-    
+
     class WhatsAppNotifier {
       update(data) {
-        console.log(`Enviando notificación por WhatsApp a ${data.phone}: ${data.message}`);
-        // En producción, aquí se integraría con la API de WhatsApp
-        if (data.userId && users.some(u => u.id === data.userId && u.whatsapp)) {
+        if (!data.phone || !data.message) return;
+        
+        console.log(`[WhatsApp Notifier] Enviando a ${data.phone}: ${data.message}`);
+        
+        // En un entorno real, aquí se integraría con la API de WhatsApp Business
+        if (data.userId) {
           Swal.fire({
             title: "Notificación por WhatsApp",
             text: data.message,
@@ -579,11 +590,54 @@
       }
     }
 
+    // Implementación del patrón Strategy para cálculo de puntos
+    class PointsCalculator {
+      constructor() {
+        this.strategies = {
+          organico: new OrganicWasteStrategy(),
+          inorganico: new InorganicWasteStrategy(),
+          reciclable: new RecyclableWasteStrategy(),
+          peligroso: new HazardousWasteStrategy()
+        };
+      }
+      
+      calculate(type, weight) {
+        const strategy = this.strategies[type];
+        if (!strategy) return 0;
+        return strategy.calculate(weight);
+      }
+    }
+
+    class OrganicWasteStrategy {
+      calculate(weight) {
+        return Math.floor(weight * 0.8); // 0.8 puntos/kg (según RF-12)
+      }
+    }
+
+    class InorganicWasteStrategy {
+      calculate(weight) {
+        return Math.floor(weight * 0.5); // 0.5 puntos/kg
+      }
+    }
+
+    class RecyclableWasteStrategy {
+      calculate(weight) {
+        return Math.floor(weight * 1); // 1 punto/kg
+      }
+    }
+
+    class HazardousWasteStrategy {
+      calculate(weight) {
+        return Math.floor(weight * 2); // 2 puntos/kg
+      }
+    }
+
     // Crear instancias
     const notificationSystem = new NotificationSystem();
     const whatsappNotifier = new WhatsAppNotifier();
     notificationSystem.subscribe(whatsappNotifier);
-    
+    const pointsCalculator = new PointsCalculator();
+
     // Funciones para gestión de vehículos
     function showAddVehicleForm(vehicleId = null) {
       currentEditingVehicleId = vehicleId;
@@ -788,10 +842,10 @@
           // Simular notificación por WhatsApp si está activado
           if (whatsappNotification && user.phone) {
             setTimeout(() => {
-              Swal.fire({
-                title: "Notificación por WhatsApp",
-                text: `Se ha enviado un código de verificación al número ${user.phone}`,
-                icon: "info"
+              notificationSystem.notify({
+                userId: user.id,
+                phone: user.phone,
+                message: `¡Bienvenido a ARDI-MI! Has iniciado sesión correctamente.`
               });
             }, 2000);
           }
@@ -817,8 +871,23 @@
         return;
       }
       
+      if (!validateEmail(email)) {
+        Swal.fire("Error", "Por favor ingrese un correo electrónico válido", "error");
+        return;
+      }
+      
+      if (!validatePassword(password)) {
+        Swal.fire("Error", "La contraseña debe tener al menos 6 caracteres", "error");
+        return;
+      }
+      
       if (password !== confirmPassword) {
         Swal.fire("Error", "Las contraseñas no coinciden", "error");
+        return;
+      }
+      
+      if (phone && !validatePhone(phone)) {
+        Swal.fire("Error", "Por favor ingrese un número de teléfono válido (10-15 dígitos)", "error");
         return;
       }
       
@@ -827,18 +896,22 @@
         return;
       }
       
-      // Crear nuevo usuario
-      const newUser = {
+      // Crear nuevo usuario usando Factory Method
+      let userFactory;
+      if (role === 'user') {
+        userFactory = new RegularUserFactory();
+      } else {
+        userFactory = new CompanyUserFactory();
+      }
+      
+      const newUser = userFactory.createUser({
         id: users.length + 1,
         name,
         email,
         password,
-        role,
         phone,
-        points: 0,
-        whatsapp: whatsappNotification,
-        status: 'active'
-      };
+        whatsapp: whatsappNotification
+      });
       
       users.push(newUser);
       
@@ -991,7 +1064,11 @@
       // Crear gráfico de estadísticas
       const ctx = document.getElementById('companyStatsChart').getContext('2d');
       
-      new Chart(ctx, {
+      if (window.companyStatsChart) {
+        window.companyStatsChart.destroy();
+      }
+      
+      window.companyStatsChart = new Chart(ctx, {
         type: 'pie',
         data: {
           labels: ['Completadas', 'Pendientes', 'Rechazadas'],
@@ -1005,6 +1082,12 @@
           }]
         }
       });
+      
+      // Actualizar lista de vehículos
+      renderVehiclesList();
+      
+      // Actualizar lista de usuarios
+      searchUsers();
     }
 
     // Actualizar sección de administrador
@@ -1063,7 +1146,11 @@
       
       const types = ['organico', 'inorganico', 'reciclable', 'peligroso'];
       
-      new Chart(ctx, {
+      if (window.adminRequestsChart) {
+        window.adminRequestsChart.destroy();
+      }
+      
+      window.adminRequestsChart = new Chart(ctx, {
         type: 'bar',
         data: {
           labels: types.map(getWasteTypeName),
@@ -1098,7 +1185,7 @@
       }
       
       // Calcular puntos según el tipo de residuo (Strategy pattern)
-      const points = calculatePoints(type, weight);
+      const points = pointsCalculator.calculate(type, weight);
       
       const newRequest = {
         id: collectionRequests.length + 1,
@@ -1111,7 +1198,7 @@
       };
       
       collectionRequests.push(newRequest);
-      
+
       // Actualizar puntos del usuario
       currentUser.points += points;
       
@@ -1125,10 +1212,10 @@
         // Simular notificación a empresas
         if (currentUser.whatsapp) {
           setTimeout(() => {
-            Swal.fire({
-              title: "Notificación por WhatsApp",
-              text: "Las empresas recolectoras han sido notificadas de tu solicitud",
-              icon: "info"
+            notificationSystem.notify({
+              userId: currentUser.id,
+              phone: currentUser.phone,
+              message: `Tu solicitud de recolección para el ${date} ha sido registrada correctamente. Puntos obtenidos: ${points}`
             });
           }, 2000);
         }
@@ -1136,95 +1223,6 @@
     }
 
     // Función para aceptar solicitud (empresa)
-    function acceptRequest(requestId) {
-      const request = collectionRequests.find(r => r.id === requestId);
-      
-      if (request) {
-        request.status = 'accepted';
-        request.companyId = currentUser.id;
-        
-        Swal.fire({
-          title: "Solicitud aceptada",
-          text: "Has aceptado esta solicitud de recolección",
-          icon: "success"
-        }).then(() => {
-          updateCompanySection();
-          
-          // Notificar al usuario
-          const user = users.find(u => u.id === request.userId);
-          if (user && user.whatsapp) {
-            setTimeout(() => {
-              Swal.fire({
-                title: "Notificación por WhatsApp",
-                text: `La empresa ${currentUser.name} ha aceptado tu solicitud para el ${request.date}`,
-                icon: "info"
-              });
-            }, 2000);
-          }
-        });
-      }
-    }
-
-    // Funciones para gestión de usuarios por empresas
-    function searchUsers() {
-      const searchTerm = document.getElementById('user-search').value.toLowerCase();
-      const managedUsersList = document.getElementById('managed-users-list');
-      managedUsersList.innerHTML = '';
-      
-      let filteredUsers = users.filter(u => 
-        u.role === 'user' && 
-        u.status === 'active' && 
-        (u.name.toLowerCase().includes(searchTerm) || 
-         u.email.toLowerCase().includes(searchTerm))
-      );
-      
-      if (filteredUsers.length === 0) {
-        managedUsersList.innerHTML = '<li>No se encontraron usuarios</li>';
-        return;
-      }
-      
-      filteredUsers.forEach(user => {
-        const li = document.createElement('li');
-        li.innerHTML = `
-          <div>
-            <strong>${user.name}</strong> (${user.email})<br>
-            Teléfono: ${user.phone} | Puntos: ${user.points}
-          </div>
-          <button onclick="deleteUser(${user.id})">Eliminar</button>
-        `;
-        managedUsersList.appendChild(li);
-      });
-    }
-    
-    function deleteUser(userId) {
-      Swal.fire({
-        title: "¿Eliminar usuario?",
-        text: "Esta acción desactivará el usuario pero mantendrá sus datos históricos",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Sí, eliminar",
-        cancelButtonText: "Cancelar"
-      }).then((result) => {
-        if (result.isConfirmed) {
-          const user = users.find(u => u.id === userId);
-          if (user) {
-            user.status = 'inactive';
-            updateCompanySection();
-            
-            // Notificar al usuario
-            notificationSystem.notify({
-              userId: user.id,
-              phone: user.phone,
-              message: `Su cuenta en ARDI-MI ha sido desactivada por la empresa ${currentUser.name}. Contacte al administrador para más información.`
-            });
-            
-            Swal.fire("Éxito", "Usuario desactivado correctamente", "success");
-          }
-        }
-      });
-    }
-    
-    // Modificación en la función acceptRequest para asignar vehículo
     function acceptRequest(requestId) {
       const request = collectionRequests.find(r => r.id === requestId);
       
@@ -1307,7 +1305,13 @@
         request.weight = weight;
         
         // Recalcular puntos con el peso real
-        request.points = calculatePoints(request.type, weight);
+        request.points = pointsCalculator.calculate(request.type, weight);
+        
+        // Actualizar puntos del usuario
+        const user = users.find(u => u.id === request.userId);
+        if (user) {
+          user.points += request.points;
+        }
         
         Swal.fire({
           title: "¡Recolección registrada!",
@@ -1317,18 +1321,74 @@
           updateCompanySection();
           
           // Notificar al usuario
-          const user = users.find(u => u.id === request.userId);
           if (user && user.whatsapp) {
-            setTimeout(() => {
-              Swal.fire({
-                title: "Notificación por WhatsApp",
-                text: `La empresa ${currentUser.name} ha registrado la recolección de tus residuos. Puntos obtenidos: ${request.points}`,
-                icon: "info"
-              });
-            }, 2000);
+            notificationSystem.notify({
+              userId: user.id,
+              phone: user.phone,
+              message: `La empresa ${currentUser.name} ha registrado la recolección de tus residuos. Puntos obtenidos: ${request.points}`
+            });
           }
         });
       }
+    }
+
+    // Funciones para gestión de usuarios por empresas
+    function searchUsers() {
+      const searchTerm = document.getElementById('user-search').value.toLowerCase();
+      const managedUsersList = document.getElementById('managed-users-list');
+      managedUsersList.innerHTML = '';
+      
+      let filteredUsers = users.filter(u => 
+        u.role === 'user' && 
+        u.status === 'active' && 
+        (u.name.toLowerCase().includes(searchTerm) || 
+         u.email.toLowerCase().includes(searchTerm))
+      );
+      
+      if (filteredUsers.length === 0) {
+        managedUsersList.innerHTML = '<li>No se encontraron usuarios</li>';
+        return;
+      }
+      
+      filteredUsers.forEach(user => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <div>
+            <strong>${user.name}</strong> (${user.email})<br>
+            Teléfono: ${user.phone} | Puntos: ${user.points}
+          </div>
+          <button onclick="deleteUser(${user.id})">Eliminar</button>
+        `;
+        managedUsersList.appendChild(li);
+      });
+    }
+    
+    function deleteUser(userId) {
+      Swal.fire({
+        title: "¿Eliminar usuario?",
+        text: "Esta acción desactivará el usuario pero mantendrá sus datos históricos",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const user = users.find(u => u.id === userId);
+          if (user) {
+            user.status = 'inactive';
+            updateCompanySection();
+            
+            // Notificar al usuario
+            notificationSystem.notify({
+              userId: user.id,
+              phone: user.phone,
+              message: `Su cuenta en ARDI-MI ha sido desactivada por la empresa ${currentUser.name}. Contacte al administrador para más información.`
+            });
+            
+            Swal.fire("Éxito", "Usuario desactivado correctamente", "success");
+          }
+        }
+      });
     }
 
     // Función para filtrar datos en el panel de administración
@@ -1374,18 +1434,6 @@
       });
     }
 
-    // Función para calcular puntos (Strategy pattern)
-    function calculatePoints(type, weight) {
-      const strategies = {
-        organico: w => Math.floor(w * 0.8),    // 0.8 puntos/kg
-        inorganico: w => Math.floor(w * 0.5),  // 0.5 puntos/kg
-        reciclable: w => Math.floor(w * 1),    // 1 punto/kg
-        peligroso: w => Math.floor(w * 2)      // 2 puntos/kg
-      };
-      
-      return strategies[type] ? strategies[type](weight) : 0;
-    }
-
     // Función para verificar notificaciones
     function checkForNotifications() {
       if (currentUser.role === 'user') {
@@ -1400,10 +1448,10 @@
         });
         
         if (updatedRequests.length > 0 && currentUser.whatsapp) {
-          Swal.fire({
-            title: "Nueva notificación",
-            text: `Tienes ${updatedRequests.length} solicitudes aceptadas por empresas recolectoras`,
-            icon: "info"
+          notificationSystem.notify({
+            userId: currentUser.id,
+            phone: currentUser.phone,
+            message: `Tienes ${updatedRequests.length} solicitudes aceptadas por empresas recolectoras`
           });
         }
       } else if (currentUser.role === 'company') {
@@ -1415,10 +1463,10 @@
         if (newRequests.length > 0 && currentUser.whatsapp) {
           newRequests.forEach(r => r.notified = true);
           
-          Swal.fire({
-            title: "Nuevas solicitudes",
-            text: `Hay ${newRequests.length} nuevas solicitudes de recolección disponibles`,
-            icon: "info"
+          notificationSystem.notify({
+            userId: currentUser.id,
+            phone: currentUser.phone,
+            message: `Hay ${newRequests.length} nuevas solicitudes de recolección disponibles`
           });
         }
       }
@@ -1445,6 +1493,20 @@
       return names[status] || status;
     }
     
+    // Funciones de validación
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+
+    function validatePassword(password) {
+      return password.length >= 6;
+    }
+
+    function validatePhone(phone) {
+      return /^\d{10,15}$/.test(phone);
+    }
+    
     // Funciones de ejemplo para exportación
     function exportUsersToPDF() {
       Swal.fire("PDF Generado", "Se ha creado el reporte de usuarios en PDF", "success");
@@ -1465,13 +1527,6 @@
     
     function editRequest(requestId) {
       Swal.fire("Editar Solicitud", `Editar solicitud con ID: ${requestId}`, "info");
-    }
-
-    // Actualización de la sección de empresa para incluir vehículos
-    function updateCompanySection() {
-      // Código existente...
-      renderVehiclesList();
-      searchUsers(); // Cargar lista de usuarios inicial
     }
 
     // Inicializar la aplicación mostrando el login
