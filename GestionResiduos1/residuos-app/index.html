@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ARDI-MI ♻️ - Gestión de Residuos</title>
+  <title>Ardi-MI ♻️</title>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -13,7 +14,7 @@
       --dark: #1b5e20;
       --light: #f1f8e9;
     }
-    
+
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f5f5f5;
@@ -24,7 +25,23 @@
       align-items: center;
       min-height: 100vh;
     }
-    
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-image: url('/imagenes/Logo\ 1.1.png');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 50%;
+      opacity: 0.20;
+      pointer-events: none;
+      z-index: -1;
+    }
+
     .container {
       width: 100%;
       max-width: 400px;
@@ -33,7 +50,7 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       overflow: hidden;
     }
-    
+
     .header {
       background-color: var(--primary);
       color: white;
@@ -44,23 +61,24 @@
       justify-content: center;
       gap: 10px;
     }
-    
+
     .logo {
       height: 40px;
       width: auto;
     }
-    
+
     h1 {
       color: var(--dark);
       text-align: center;
       margin: 20px 0;
     }
-    
+
     #form-section {
       padding: 20px;
     }
-    
-    input, select {
+
+    input,
+    select {
       width: 100%;
       padding: 12px;
       margin: 8px 0;
@@ -69,7 +87,7 @@
       box-sizing: border-box;
       font-size: 16px;
     }
-    
+
     button {
       width: 100%;
       padding: 12px;
@@ -82,34 +100,34 @@
       margin-top: 10px;
       transition: background-color 0.3s;
     }
-    
+
     button:hover {
       background-color: var(--dark);
     }
-    
+
     .login-options {
       margin-top: 15px;
       text-align: center;
     }
-    
+
     .login-options a {
       color: var(--primary);
       text-decoration: none;
       display: block;
       margin: 5px 0;
     }
-    
+
     .login-options a:hover {
       text-decoration: underline;
     }
-    
+
     .whatsapp-option {
       display: flex;
       align-items: center;
       gap: 5px;
       margin: 10px 0;
     }
-    
+
     .hidden {
       display: none;
     }
@@ -121,7 +139,7 @@
       padding: 20px;
       margin: 0 auto;
     }
-    
+
     .section {
       background: white;
       border-radius: 8px;
@@ -129,48 +147,57 @@
       margin-bottom: 20px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
-    
+
     .chart-container {
       margin: 20px 0;
       position: relative;
       height: 300px;
     }
-    
-    #pending-requests-list, #users-list, #companies-list, #all-requests-list, #managed-users-list {
+
+    #pending-requests-list,
+    #users-list,
+    #companies-list,
+    #all-requests-list,
+    #managed-users-list {
       list-style: none;
       padding: 0;
     }
-    
-    #pending-requests-list li, #users-list li, #companies-list li, #all-requests-list li, #managed-users-list li {
+
+    #pending-requests-list li,
+    #users-list li,
+    #companies-list li,
+    #all-requests-list li,
+    #managed-users-list li {
       padding: 10px;
       border-bottom: 1px solid #eee;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    
+
     .filter-section {
       display: flex;
       gap: 10px;
       margin-bottom: 15px;
       flex-wrap: wrap;
     }
-    
-    .filter-section input, .filter-section select {
+
+    .filter-section input,
+    .filter-section select {
       flex: 1;
       min-width: 150px;
     }
-    
+
     .filter-section button {
       width: auto;
       padding: 0 20px;
     }
-    
+
     .logout-btn {
       background-color: #d32f2f;
       margin-top: 20px;
     }
-    
+
     .logout-btn:hover {
       background-color: #b71c1c;
     }
@@ -183,39 +210,39 @@
       margin-bottom: 15px;
       background-color: #f9f9f9;
     }
-    
+
     .vehicle-card h4 {
       margin-top: 0;
       color: var(--dark);
     }
-    
+
     .vehicle-property {
       margin: 5px 0;
     }
-    
+
     .vehicle-actions {
       display: flex;
       gap: 10px;
       margin-top: 10px;
     }
-    
+
     .status-badge {
       padding: 3px 8px;
       border-radius: 12px;
       font-size: 12px;
       font-weight: bold;
     }
-    
+
     .status-pending {
       background-color: #fff3cd;
       color: #856404;
     }
-    
+
     .status-active {
       background-color: #d4edda;
       color: #155724;
     }
-    
+
     .status-inactive {
       background-color: #f8d7da;
       color: #721c24;
@@ -231,9 +258,9 @@
       width: 100%;
       height: 100%;
       overflow: auto;
-      background-color: rgba(0,0,0,0.4);
+      background-color: rgba(0, 0, 0, 0.4);
     }
-    
+
     .modal-content {
       background-color: #fefefe;
       margin: 15% auto;
@@ -243,7 +270,7 @@
       max-width: 500px;
       border-radius: 8px;
     }
-    
+
     .close {
       color: #aaa;
       float: right;
@@ -251,32 +278,49 @@
       font-weight: bold;
       cursor: pointer;
     }
-    
+
     .close:hover {
       color: black;
     }
-    
+
     @media (max-width: 768px) {
       .container {
         margin: 10px;
         border-radius: 0;
       }
-      
+
       .filter-section {
         flex-direction: column;
       }
-      
+
       .filter-section button {
         width: 100%;
       }
-      
+
       .modal-content {
         width: 90%;
         margin: 20% auto;
       }
     }
+
+    /*Estilos Swal*/
+    .swal2-popup .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .swal2-popup .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .swal2-popup .swal2-input {
+      width: 100%;
+      margin: 0.5rem 0;
+    }
   </style>
 </head>
+
 <body>
   <!-- Página de Login -->
   <div class="container" id="login-page">
@@ -290,12 +334,12 @@
       <h2>Iniciar Sesión</h2>
       <input type="email" id="loginEmail" placeholder="Correo electrónico" required />
       <input type="password" id="loginPassword" placeholder="Contraseña" required />
-      
+
       <div class="whatsapp-option">
         <input type="checkbox" id="whatsappNotification">
         <label for="whatsappNotification">Recibir notificaciones por WhatsApp</label>
       </div>
-      
+
       <button onclick="login()">Ingresar</button>
 
       <div class="login-options">
@@ -308,7 +352,7 @@
   <!-- Página de Recuperación de Contraseña -->
   <div class="container hidden" id="password-page">
     <div class="header">
-      <img src="/imagenes/Logo 1.1.png" alt="logo" class="logo">
+      <img src="imagenes/Logo 1.1.png" alt="logo" class="logo">
       <span>ARDI-MI ♻️</span>
     </div>
 
@@ -323,7 +367,7 @@
   <!-- Página de Registro -->
   <div class="container hidden" id="register-page">
     <div class="header">
-      <img src="/imagenes/Logo 1.1.png" alt="logo" class="logo">
+      <img src="imagenes/Logo 1.1.png" alt="logo" class="logo">
       <span>ARDI-MI ♻️</span>
     </div>
 
@@ -334,17 +378,17 @@
       <input type="password" id="registerPassword" placeholder="Contraseña" required />
       <input type="password" id="registerConfirmPassword" placeholder="Confirmar contraseña" required />
       <input type="tel" id="registerPhone" placeholder="Teléfono (para notificaciones)" />
-      
+
       <select id="registerRole">
         <option value="user">Usuario</option>
         <option value="company">Empresa Recolectora</option>
       </select>
-      
+
       <div class="whatsapp-option">
         <input type="checkbox" id="registerWhatsappNotification" checked>
         <label for="registerWhatsappNotification">Recibir notificaciones por WhatsApp</label>
       </div>
-      
+
       <button onclick="register()">Registrarse</button>
       <button class="logout-btn" onclick="showLoginForm()">Volver al Login</button>
     </div>
@@ -353,7 +397,7 @@
   <!-- Dashboard -->
   <div class="container hidden" id="dashboard-container">
     <div class="header">
-      <img src="/imagenes/Logo 1.1.png" alt="logo" class="logo">
+      <img src="imagenes/Logo 1.1.png" alt="logo" class="logo">
       <span>ARDI-MI ♻️ - <span id="user-role-display"></span></span>
     </div>
     <h1 id="welcome-message"></h1>
@@ -364,14 +408,14 @@
       <input type="date" id="collectionDate" required />
       <select id="wasteType" required>
         <option value="">Seleccione tipo de residuo</option>
-        <option value="organico">Orgánico 🍂</option>
-        <option value="inorganico">Inorgánico 🏗️</option>
-        <option value="reciclable">Reciclable ♻️</option>
-        <option value="peligroso">Peligroso ☣️</option>
+        <option value="organico">Orgánicos 🍂</option>
+        <option value="inorganico">Inorganicos 🏗️</option>
+        <option value="reciclable">Reciclables ♻️</option>
+        <option value="peligroso">Peligrosos ☣️</option>
       </select>
       <input type="number" id="wasteWeight" placeholder="Peso (kg)" min="0.1" step="0.1" required />
       <button onclick="createCollectionRequest()">Solicitar Recolección</button>
-      
+
       <div class="section">
         <h3><i class="fas fa-coins"></i> Puntos Acumulados</h3>
         <p>Total de puntos: <strong id="total-points">0</strong></p>
@@ -385,7 +429,7 @@
     <div id="company-section" class="section hidden">
       <h2><i class="fas fa-truck"></i> Solicitudes Pendientes</h2>
       <ul id="pending-requests-list"></ul>
-      
+
       <h3><i class="fas fa-weight-hanging"></i> Registrar Recolección</h3>
       <div class="filter-section">
         <select id="request-select">
@@ -394,20 +438,20 @@
         <input type="number" id="collected-weight" placeholder="Peso recolectado (kg)" min="0.1" step="0.1">
         <button onclick="registerCollection()">Registrar</button>
       </div>
-      
+
       <div class="section">
         <h3><i class="fas fa-chart-line"></i> Estadísticas</h3>
         <div class="chart-container">
           <canvas id="companyStatsChart"></canvas>
         </div>
       </div>
-      
+
       <div class="section">
         <h3><i class="fas fa-truck-moving"></i> Gestión de Vehículos Recolectores</h3>
         <button onclick="showAddVehicleForm()"><i class="fas fa-plus"></i> Añadir Vehículo</button>
         <div id="vehicles-list"></div>
       </div>
-      
+
       <!-- Nueva sección para gestión de usuarios -->
       <div class="section">
         <h3><i class="fas fa-users-cog"></i> Gestión de Usuarios</h3>
@@ -418,7 +462,7 @@
         <ul id="managed-users-list"></ul>
       </div>
     </div>
-    
+
     <!-- Modal para añadir/editar vehículo -->
     <div id="vehicle-modal" class="modal hidden">
       <div class="modal-content">
@@ -441,7 +485,7 @@
     <!-- Sección Administrador -->
     <div id="admin-section" class="section hidden">
       <h2><i class="fas fa-tachometer-alt"></i> Panel de Administración</h2>
-      
+
       <div class="filter-section">
         <input type="date" id="admin-start-date">
         <input type="date" id="admin-end-date">
@@ -454,26 +498,26 @@
         </select>
         <button onclick="filterAdminData()">Filtrar</button>
       </div>
-      
+
       <div class="chart-container">
         <canvas id="adminRequestsChart"></canvas>
       </div>
-      
+
       <div class="section">
         <h3><i class="fas fa-users"></i> Usuarios Registrados</h3>
         <ul id="users-list"></ul>
       </div>
-      
+
       <div class="section">
         <h3><i class="fas fa-building"></i> Empresas Recolectoras</h3>
         <ul id="companies-list"></ul>
       </div>
-      
+
       <div class="section">
         <h3><i class="fas fa-list"></i> Todas las Solicitudes</h3>
         <ul id="all-requests-list"></ul>
       </div>
-      
+
       <div class="filter-section">
         <button onclick="exportUsersToPDF()">Exportar Usuarios (PDF)</button>
         <button onclick="exportRequestsToExcel()">Exportar Solicitudes (Excel)</button>
@@ -485,14 +529,313 @@
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
+    //Variables globales
+    /* let currentEditingUserId = null;
+     let currentEditingCompanyId = null;
+     let currentEditingRequestId = null;
+ 
+     //Función para editar usuarios (admin)
+     function editUser(userId) {
+   currentEditingUserId = userId;
+   const user = users.find(u => u.id === userId);
+   
+   Swal.fire({
+     title: `Editar Usuario: ${user.name}`,
+     html: `
+       <div style="text-align: left;">
+         <div class="form-group">
+           <label for="edit-user-name">Nombre:</label>
+           <input id="edit-user-name" class="swal2-input" value="${user.name}">
+         </div>
+         <div class="form-group">
+           <label for="edit-user-email">Email:</label>
+           <input id="edit-user-email" class="swal2-input" value="${user.email}" type="email">
+         </div>
+         <div class="form-group">
+           <label for="edit-user-phone">Teléfono:</label>
+           <input id="edit-user-phone" class="swal2-input" value="${user.phone}">
+         </div>
+         <div class="form-group">
+           <label for="edit-user-points">Puntos:</label>
+           <input id="edit-user-points" class="swal2-input" value="${user.points}" type="number">
+         </div>
+         <div class="form-group">
+           <label for="edit-user-status">Estado:</label>
+           <select id="edit-user-status" class="swal2-input">
+             <option value="active" ${user.status === 'active' ? 'selected' : ''}>Activo</option>
+             <option value="inactive" ${user.status === 'inactive' ? 'selected' : ''}>Inactivo</option>
+           </select>
+         </div>
+         <div class="form-group">
+           <label for="edit-user-whatsapp">
+             <input type="checkbox" id="edit-user-whatsapp" ${user.whatsapp ? 'checked' : ''}>
+             Recibir notificaciones por WhatsApp
+           </label>
+         </div>
+       </div>
+     `,
+     showCancelButton: true,
+     confirmButtonText: 'Guardar',
+     cancelButtonText: 'Cancelar',
+     preConfirm: () => {
+       return {
+         name: document.getElementById('edit-user-name').value,
+         email: document.getElementById('edit-user-email').value,
+         phone: document.getElementById('edit-user-phone').value,
+         points: parseInt(document.getElementById('edit-user-points').value),
+         status: document.getElementById('edit-user-status').value,
+         whatsapp: document.getElementById('edit-user-whatsapp').checked
+       };
+     }
+   }).then((result) => {
+     if (result.isConfirmed) {
+       const updatedData = result.value;
+       
+       // Validaciones
+       if (!updatedData.name || !updatedData.email) {
+         Swal.fire("Error", "Nombre y email son obligatorios", "error");
+         return;
+       }
+       
+       if (!validateEmail(updatedData.email)) {
+         Swal.fire("Error", "Email no válido", "error");
+         return;
+       }
+       
+       // Actualizar usuario
+       const userIndex = users.findIndex(u => u.id === userId);
+       if (userIndex !== -1) {
+         users[userIndex] = {
+           ...users[userIndex],
+           name: updatedData.name,
+           email: updatedData.email,
+           phone: updatedData.phone,
+           points: updatedData.points,
+           status: updatedData.status,
+           whatsapp: updatedData.whatsapp
+         };
+         
+         Swal.fire("Éxito", "Usuario actualizado correctamente", "success");
+         updateAdminSection(); // Actualizar la vista
+       }
+     }
+   });
+ }
+ 
+ //Funcion para editar empresas(admin)
+ function editCompany(companyId) {
+   currentEditingCompanyId = companyId;
+   const company = users.find(u => u.id === companyId && u.role === 'company');
+   
+   Swal.fire({
+     title: `Editar Empresa: ${company.name}`,
+     html: `
+       <div style="text-align: left;">
+         <div class="form-group">
+           <label for="edit-company-name">Nombre:</label>
+           <input id="edit-company-name" class="swal2-input" value="${company.name}">
+         </div>
+         <div class="form-group">
+           <label for="edit-company-email">Email:</label>
+           <input id="edit-company-email" class="swal2-input" value="${company.email}" type="email">
+         </div>
+         <div class="form-group">
+           <label for="edit-company-phone">Teléfono:</label>
+           <input id="edit-company-phone" class="swal2-input" value="${company.phone}">
+         </div>
+         <div class="form-group">
+           <label for="edit-company-status">Estado:</label>
+           <select id="edit-company-status" class="swal2-input">
+             <option value="active" ${company.status === 'active' ? 'selected' : ''}>Activo</option>
+             <option value="inactive" ${company.status === 'inactive' ? 'selected' : ''}>Inactivo</option>
+           </select>
+         </div>
+         <div class="form-group">
+           <label for="edit-company-whatsapp">
+             <input type="checkbox" id="edit-company-whatsapp" ${company.whatsapp ? 'checked' : ''}>
+             Recibir notificaciones por WhatsApp
+           </label>
+         </div>
+       </div>
+     `,
+     showCancelButton: true,
+     confirmButtonText: 'Guardar',
+     cancelButtonText: 'Cancelar',
+     preConfirm: () => {
+       return {
+         name: document.getElementById('edit-company-name').value,
+         email: document.getElementById('edit-company-email').value,
+         phone: document.getElementById('edit-company-phone').value,
+         status: document.getElementById('edit-company-status').value,
+         whatsapp: document.getElementById('edit-company-whatsapp').checked
+       };
+     }
+   }).then((result) => {
+     if (result.isConfirmed) {
+       const updatedData = result.value;
+       
+       // Validaciones
+       if (!updatedData.name || !updatedData.email) {
+         Swal.fire("Error", "Nombre y email son obligatorios", "error");
+         return;
+       }
+       
+       if (!validateEmail(updatedData.email)) {
+         Swal.fire("Error", "Email no válido", "error");
+         return;
+       }
+       
+       // Actualizar empresa
+       const companyIndex = users.findIndex(u => u.id === companyId);
+       if (companyIndex !== -1) {
+         users[companyIndex] = {
+           ...users[companyIndex],
+           name: updatedData.name,
+           email: updatedData.email,
+           phone: updatedData.phone,
+           status: updatedData.status,
+           whatsapp: updatedData.whatsapp
+         };
+         
+         Swal.fire("Éxito", "Empresa actualizada correctamente", "success");
+         updateAdminSection(); // Actualizar la vista
+         
+         // Si la empresa editada es la actualmente logueada, actualizar datos
+         if (currentUser && currentUser.id === companyId) {
+           currentUser = users[companyIndex];
+         }
+       }
+     }
+   });
+ }
+ 
+ //Función para editar solicitudes (admin)
+ function editRequest(requestId) {
+   currentEditingRequestId = requestId;
+   const request = collectionRequests.find(r => r.id === requestId);
+   const user = users.find(u => u.id === request.userId);
+   const company = request.companyId ? users.find(u => u.id === request.companyId) : null;
+   
+   Swal.fire({
+     title: `Editar Solicitud #${request.id}`,
+     html: `
+       <div style="text-align: left;">
+         <div class="form-group">
+           <label>Usuario: ${user.name}</label>
+         </div>
+         <div class="form-group">
+           <label for="edit-request-date">Fecha:</label>
+           <input id="edit-request-date" class="swal2-input" type="date" value="${request.date}">
+         </div>
+         <div class="form-group">
+           <label for="edit-request-type">Tipo:</label>
+           <select id="edit-request-type" class="swal2-input">
+             <option value="organico" ${request.type === 'organico' ? 'selected' : ''}>Orgánico</option>
+             <option value="inorganico" ${request.type === 'inorganico' ? 'selected' : ''}>Inorgánico</option>
+             <option value="reciclable" ${request.type === 'reciclable' ? 'selected' : ''}>Reciclable</option>
+             <option value="peligroso" ${request.type === 'peligroso' ? 'selected' : ''}>Peligroso</option>
+           </select>
+         </div>
+         <div class="form-group">
+           <label for="edit-request-weight">Peso (kg):</label>
+           <input id="edit-request-weight" class="swal2-input" type="number" step="0.1" min="0.1" value="${request.weight}">
+         </div>
+         <div class="form-group">
+           <label for="edit-request-status">Estado:</label>
+           <select id="edit-request-status" class="swal2-input">
+             <option value="pending" ${request.status === 'pending' ? 'selected' : ''}>Pendiente</option>
+             <option value="accepted" ${request.status === 'accepted' ? 'selected' : ''}>Aceptada</option>
+             <option value="completed" ${request.status === 'completed' ? 'selected' : ''}>Completada</option>
+             <option value="rejected" ${request.status === 'rejected' ? 'selected' : ''}>Rechazada</option>
+           </select>
+         </div>
+         <div class="form-group">
+           <label for="edit-request-company">Empresa Asignada:</label>
+           <select id="edit-request-company" class="swal2-input">
+             <option value="">Ninguna</option>
+             ${users.filter(u => u.role === 'company' && u.status === 'active')
+               .map(c => `<option value="${c.id}" ${request.companyId === c.id ? 'selected' : ''}>${c.name}</option>`)
+               .join('')}
+           </select>
+         </div>
+       </div>
+     `,
+     showCancelButton: true,
+     confirmButtonText: 'Guardar',
+     cancelButtonText: 'Cancelar',
+     preConfirm: () => {
+       return {
+         date: document.getElementById('edit-request-date').value,
+         type: document.getElementById('edit-request-type').value,
+         weight: parseFloat(document.getElementById('edit-request-weight').value),
+         status: document.getElementById('edit-request-status').value,
+         companyId: document.getElementById('edit-request-company').value || null
+       };
+     }
+   }).then((result) => {
+     if (result.isConfirmed) {
+       const updatedData = result.value;
+       
+       // Validaciones
+       if (!updatedData.date || !updatedData.type || !updatedData.weight || updatedData.weight <= 0) {
+         Swal.fire("Error", "Complete todos los campos correctamente", "error");
+         return;
+       }
+       
+       // Actualizar solicitud
+       const requestIndex = collectionRequests.findIndex(r => r.id === requestId);
+       if (requestIndex !== -1) {
+         // Recalcular puntos si cambió el tipo o peso
+         const originalPoints = collectionRequests[requestIndex].points;
+         let newPoints = originalPoints;
+         
+         if (collectionRequests[requestIndex].type !== updatedData.type || 
+             collectionRequests[requestIndex].weight !== updatedData.weight) {
+           newPoints = pointsCalculator.calculate(updatedData.type, updatedData.weight);
+         }
+         
+         collectionRequests[requestIndex] = {
+           ...collectionRequests[requestIndex],
+           date: updatedData.date,
+           type: updatedData.type,
+           weight: updatedData.weight,
+           status: updatedData.status,
+           companyId: updatedData.companyId,
+           points: newPoints
+         };
+         
+         // Actualizar puntos del usuario si cambió
+         if (newPoints !== originalPoints) {
+           const userIndex = users.findIndex(u => u.id === request.userId);
+           if (userIndex !== -1) {
+             users[userIndex].points += (newPoints - originalPoints);
+           }
+         }
+         
+         Swal.fire("Éxito", "Solicitud actualizada correctamente", "success");
+         updateAdminSection(); // Actualizar la vista
+         
+         // Notificar al usuario si está habilitado
+         if (user.whatsapp) {
+           notificationSystem.notify({
+             userId: user.id,
+             phone: user.phone,
+             message: `Tu solicitud #${requestId} ha sido actualizada. Nuevo estado: ${getStatusName(updatedData.status)}`
+           });
+         }
+       }
+     }
+   });
+ }*/
+
     // Datos de ejemplo para simular la base de datos
     const users = [
-      { id: 1, name: "Usuario Demo", email: "user@example.com", password: "123456", role: "user", phone: "1234567890", points: 150, whatsapp: true, status: 'active' },
+      { id: 1, name: "Usuario1 Demo", email: "user1@example.com", password: "123456", role: "user", phone: "1234567890", points: 150, whatsapp: true, status: 'active' },
       { id: 2, name: "Empresa Demo", email: "company@example.com", password: "123456", role: "company", phone: "0987654321", whatsapp: true, status: 'active' },
       { id: 3, name: "Admin Demo", email: "admin@example.com", password: "123456", role: "admin", phone: "5555555555", whatsapp: true, status: 'active' },
-      { id: 4, name: "Usuario 2", email: "user2@example.com", password: "123456", role: "user", phone: "1111111111", points: 75, whatsapp: false, status: 'active' }
+      { id: 4, name: "Usuario2 Demo", email: "user2@example.com", password: "123456", role: "user", phone: "1111111111", points: 75, whatsapp: false, status: 'active' }
     ];
-    
+
     let collectionRequests = [
       { id: 1, userId: 1, date: "2025-05-15", type: "reciclable", weight: 5, points: 5, status: "completed", companyId: 2, vehicleId: 1 },
       { id: 2, userId: 1, date: "2025-05-20", type: "organico", weight: 3, points: 3, status: "pending" }
@@ -514,7 +857,7 @@
         throw new Error("Método abstracto - debe ser implementado por subclases");
       }
     }
-    
+
     class RegularUserFactory extends UserFactory {
       createUser(data) {
         return {
@@ -530,7 +873,7 @@
         };
       }
     }
-    
+
     class CompanyUserFactory extends UserFactory {
       createUser(data) {
         return {
@@ -545,23 +888,23 @@
         };
       }
     }
-    
+
     // Implementación del patrón Observer para notificaciones
     class NotificationSystem {
       constructor() {
         this.observers = [];
       }
-      
+
       subscribe(observer) {
         if (!this.observers.includes(observer)) {
           this.observers.push(observer);
         }
       }
-      
+
       unsubscribe(observer) {
         this.observers = this.observers.filter(obs => obs !== observer);
       }
-      
+
       notify(data) {
         this.observers.forEach(observer => {
           try {
@@ -576,9 +919,9 @@
     class WhatsAppNotifier {
       update(data) {
         if (!data.phone || !data.message) return;
-        
+
         console.log(`[WhatsApp Notifier] Enviando a ${data.phone}: ${data.message}`);
-        
+
         // En un entorno real, aquí se integraría con la API de WhatsApp Business
         if (data.userId) {
           Swal.fire({
@@ -600,7 +943,7 @@
           peligroso: new HazardousWasteStrategy()
         };
       }
-      
+
       calculate(type, weight) {
         const strategy = this.strategies[type];
         if (!strategy) return 0;
@@ -643,7 +986,7 @@
       currentEditingVehicleId = vehicleId;
       const modal = document.getElementById('vehicle-modal');
       const title = document.getElementById('vehicle-modal-title');
-      
+
       if (vehicleId) {
         title.textContent = "Editar Vehículo";
         const vehicle = vehicles.find(v => v.id === vehicleId);
@@ -662,27 +1005,28 @@
         });
         document.getElementById('vehicle-type').value = 'compacto';
       }
-      
+
       modal.classList.remove('hidden');
     }
-    
+
     function closeVehicleModal() {
       document.getElementById('vehicle-modal').classList.add('hidden');
       currentEditingVehicleId = null;
     }
-    
+
     function saveVehicle() {
       const plate = document.getElementById('vehicle-plate').value;
       const brand = document.getElementById('vehicle-brand').value;
       const model = document.getElementById('vehicle-model').value;
       const capacity = parseInt(document.getElementById('vehicle-capacity').value);
       const type = document.getElementById('vehicle-type').value;
-      
-      if (!plate || !brand || !model || !capacity) {
-        Swal.fire("Error", "Por favor complete todos los campos", "error");
+
+      // Validación mejorada
+      if (!plate || !brand || !model || !capacity || isNaN(capacity)) {
+        Swal.fire("Error", "Por favor complete todos los campos correctamente", "error");
         return;
       }
-      
+
       if (currentEditingVehicleId) {
         // Editar vehículo existente
         const index = vehicles.findIndex(v => v.id === currentEditingVehicleId);
@@ -700,7 +1044,7 @@
       } else {
         // Crear nuevo vehículo
         const newVehicle = {
-          id: vehicles.length + 1,
+          id: vehicles.length > 0 ? Math.max(...vehicles.map(v => v.id)) + 1 : 1, // Generar ID autoincremental
           companyId: currentUser.id,
           plate,
           brand,
@@ -712,44 +1056,106 @@
         vehicles.push(newVehicle);
         Swal.fire("Éxito", "Vehículo añadido correctamente", "success");
       }
-      
-      closeVehicleModal();
-      updateCompanySection();
+
+      closeVehicleModal(); //Cierra el modelo de vehículo 
+      renderVehiclesList(); // Actualizar la lista visible
+      updateRequestSelectors(); // Actualizar selectores de vehículos en formularios
     }
 
     function renderVehiclesList() {
       const container = document.getElementById('vehicles-list');
       container.innerHTML = '';
-      
+
       const companyVehicles = vehicles.filter(v => v.companyId === currentUser.id);
-      
+
       if (companyVehicles.length === 0) {
-        container.innerHTML = '<p>No hay vehículos registrados</p>';
+        container.innerHTML = '<p class="no-vehicles">No hay vehículos registrados</p>';
         return;
       }
-      
+
+      function updateRequestSelectors() {
+        // Actualizar selector en el modal de aceptar solicitudes (si existe)
+        const vehicleAssignmentSelect = document.getElementById('vehicle-assignment');
+        if (vehicleAssignmentSelect) {
+          // Guardar el valor seleccionado actual
+          const currentSelection = vehicleAssignmentSelect.value;
+
+          // Obtener vehículos disponibles
+          const availableVehicles = vehicles.filter(v =>
+            v.companyId === currentUser.id &&
+            v.status === 'active'
+          );
+
+          // Reconstruir el selector
+          vehicleAssignmentSelect.innerHTML = availableVehicles.map(v =>
+            `<option value="${v.id}" ${v.id.toString() === currentSelection ? 'selected' : ''}>
+        ${v.plate} - ${v.brand} ${v.model} (${v.capacity}kg)
+      </option>`
+          ).join('');
+        }
+
+        // Actualizar selector en el dashboard de empresa
+        const requestSelect = document.getElementById('request-select');
+        if (requestSelect) {
+          const selectedValue = requestSelect.value;
+          requestSelect.innerHTML = '<option value="">Seleccione una solicitud</option>';
+
+          const companyRequests = collectionRequests.filter(r =>
+            r.companyId === currentUser.id &&
+            (r.status === 'accepted' || r.status === 'completed')
+          );
+
+          companyRequests.forEach(request => {
+            const user = users.find(u => u.id === request.userId);
+            const option = document.createElement('option');
+            option.value = request.id;
+            option.textContent = `${user.name} - ${request.date} - ${getWasteTypeName(request.type)}`;
+            if (request.id.toString() === selectedValue) {
+              option.selected = true;
+            }
+            requestSelect.appendChild(option);
+          });
+        }
+      }
+
       companyVehicles.forEach(vehicle => {
         const card = document.createElement('div');
         card.className = 'vehicle-card';
-        
+
         const statusClass = `status-${vehicle.status}`;
-        
+        const typeName = {
+          'compacto': 'Compacto',
+          'mediano': 'Mediano',
+          'grande': 'Grande',
+          'especial': 'Especial'
+        }[vehicle.type] || vehicle.type;
+
         card.innerHTML = `
-          <h4>${vehicle.brand} ${vehicle.model} <span class="status-badge ${statusClass}">${vehicle.status === 'active' ? 'Activo' : 'Inactivo'}</span></h4>
-          <div class="vehicle-property"><strong>Placa:</strong> ${vehicle.plate}</div>
-          <div class="vehicle-property"><strong>Capacidad:</strong> ${vehicle.capacity} kg</div>
-          <div class="vehicle-property"><strong>Tipo:</strong> ${vehicle.type}</div>
-          <div class="vehicle-actions">
-            <button onclick="showAddVehicleForm(${vehicle.id})">Editar</button>
-            <button onclick="toggleVehicleStatus(${vehicle.id})">${vehicle.status === 'active' ? 'Desactivar' : 'Activar'}</button>
-            <button onclick="deleteVehicle(${vehicle.id})">Eliminar</button>
-          </div>
-        `;
-        
+      <h4>${vehicle.brand} ${vehicle.model} 
+        <span class="status-badge ${statusClass}">
+          ${vehicle.status === 'active' ? 'Activo' : 'Inactivo'}
+        </span>
+      </h4>
+      <div class="vehicle-property"><strong>Placa:</strong> ${vehicle.plate}</div>
+      <div class="vehicle-property"><strong>Tipo:</strong> ${typeName}</div>
+      <div class="vehicle-property"><strong>Capacidad:</strong> ${vehicle.capacity} kg</div>
+      <div class="vehicle-actions">
+        <button onclick="showAddVehicleForm(${vehicle.id})">
+          <i class="fas fa-edit"></i> Editar
+        </button>
+        <button onclick="toggleVehicleStatus(${vehicle.id})">
+          <i class="fas fa-power-off"></i> ${vehicle.status === 'active' ? 'Desactivar' : 'Activar'}
+        </button>
+        <button onclick="deleteVehicle(${vehicle.id})">
+          <i class="fas fa-trash"></i> Eliminar
+        </button>
+      </div>
+    `;
+
         container.appendChild(card);
       });
     }
-    
+
     function toggleVehicleStatus(vehicleId) {
       const vehicle = vehicles.find(v => v.id === vehicleId);
       if (vehicle) {
@@ -757,8 +1163,9 @@
         updateCompanySection();
         Swal.fire("Éxito", `Vehículo ${vehicle.status === 'active' ? 'activado' : 'desactivado'}`, "success");
       }
+      updateRequestSelectors(); // Actualizar selectores de vehículos en formularios
     }
-    
+
     function deleteVehicle(vehicleId) {
       Swal.fire({
         title: "¿Eliminar vehículo?",
@@ -773,7 +1180,7 @@
           if (index !== -1) {
             // Verificar si el vehículo está asignado a alguna solicitud
             const isAssigned = collectionRequests.some(r => r.vehicleId === vehicleId);
-            
+
             if (isAssigned) {
               Swal.fire("Error", "No se puede eliminar un vehículo asignado a solicitudes", "error");
             } else {
@@ -782,6 +1189,7 @@
               Swal.fire("Éxito", "Vehículo eliminado correctamente", "success");
             }
           }
+          updateRequestSelectors(); // Actualizar selectores de vehículos en formularios
         }
       });
     }
@@ -793,23 +1201,23 @@
       document.getElementById('register-page').classList.add('hidden');
       document.getElementById('dashboard-container').classList.add('hidden');
     }
-    
+
     function showPasswordRecovery() {
       document.getElementById('login-page').classList.add('hidden');
       document.getElementById('password-page').classList.remove('hidden');
     }
-    
+
     function showRegisterForm() {
       document.getElementById('login-page').classList.add('hidden');
       document.getElementById('register-page').classList.remove('hidden');
     }
-    
+
     function showDashboard() {
       document.getElementById('login-page').classList.add('hidden');
       document.getElementById('password-page').classList.add('hidden');
       document.getElementById('register-page').classList.add('hidden');
       document.getElementById('dashboard-container').classList.remove('hidden');
-      
+
       updateDashboard();
     }
 
@@ -818,27 +1226,27 @@
       const email = document.getElementById('loginEmail').value;
       const password = document.getElementById('loginPassword').value;
       const whatsappNotification = document.getElementById('whatsappNotification').checked;
-      
+
       // Validación simple
       if (!email || !password) {
         Swal.fire("Error", "Por favor complete todos los campos", "error");
         return;
       }
-      
+
       // Buscar usuario
       const user = users.find(u => u.email === email && u.password === password);
-      
+
       if (user) {
         currentUser = user;
         currentUser.whatsapp = whatsappNotification;
-        
+
         Swal.fire({
           title: "¡Bienvenido!",
           text: `Has iniciado sesión como ${user.name}`,
           icon: "success"
         }).then(() => {
           showDashboard();
-          
+
           // Simular notificación por WhatsApp si está activado
           if (whatsappNotification && user.phone) {
             setTimeout(() => {
@@ -864,23 +1272,38 @@
       const phone = document.getElementById('registerPhone').value;
       const role = document.getElementById('registerRole').value;
       const whatsappNotification = document.getElementById('registerWhatsappNotification').checked;
-      
+
       // Validaciones
       if (!name || !email || !password || !confirmPassword) {
         Swal.fire("Error", "Por favor complete todos los campos obligatorios", "error");
         return;
       }
-      
+
+      if (!validateEmail(email)) {
+        Swal.fire("Error", "Por favor ingrese un correo electrónico válido", "error");
+        return;
+      }
+
+      if (!validatePassword(password)) {
+        Swal.fire("Error", "La contraseña debe tener al menos 6 caracteres", "error");
+        return;
+      }
+
       if (password !== confirmPassword) {
         Swal.fire("Error", "Las contraseñas no coinciden", "error");
         return;
       }
-      
+
+      if (phone && !validatePhone(phone)) {
+        Swal.fire("Error", "Por favor ingrese un número de teléfono válido (10-15 dígitos)", "error");
+        return;
+      }
+
       if (users.some(u => u.email === email)) {
         Swal.fire("Error", "Este correo ya está registrado", "error");
         return;
       }
-      
+
       // Crear nuevo usuario usando Factory Method
       let userFactory;
       if (role === 'user') {
@@ -888,7 +1311,7 @@
       } else {
         userFactory = new CompanyUserFactory();
       }
-      
+
       const newUser = userFactory.createUser({
         id: users.length + 1,
         name,
@@ -897,9 +1320,9 @@
         phone,
         whatsapp: whatsappNotification
       });
-      
+
       users.push(newUser);
-      
+
       Swal.fire({
         title: "¡Registro exitoso!",
         text: `Bienvenido ${name}, ahora puedes iniciar sesión`,
@@ -912,17 +1335,17 @@
     // Función para recuperar contraseña
     function sendPasswordRecovery() {
       const email = document.getElementById('recoveryEmail').value;
-      
+
       if (!email) {
         Swal.fire("Error", "Por favor ingrese su correo electrónico", "error");
         return;
       }
-      
+
       if (!users.some(u => u.email === email)) {
         Swal.fire("Error", "Este correo no está registrado", "error");
         return;
       }
-      
+
       Swal.fire({
         title: "Enlace enviado",
         text: `Se ha enviado un enlace para restablecer la contraseña a ${email}`,
@@ -942,17 +1365,17 @@
     // Actualizar dashboard según el rol del usuario
     function updateDashboard() {
       if (!currentUser) return;
-      
+
       document.getElementById('welcome-message').textContent = `Bienvenido, ${currentUser.name}`;
-      document.getElementById('user-role-display').textContent = 
-        currentUser.role === 'user' ? 'Usuario' : 
-        currentUser.role === 'company' ? 'Empresa Recolectora' : 'Administrador';
-      
+      document.getElementById('user-role-display').textContent =
+        currentUser.role === 'user' ? 'Usuario' :
+          currentUser.role === 'company' ? 'Empresa Recolectora' : 'Administrador';
+
       // Ocultar todas las secciones primero
       document.getElementById('user-section').classList.add('hidden');
       document.getElementById('company-section').classList.add('hidden');
       document.getElementById('admin-section').classList.add('hidden');
-      
+
       // Mostrar sección según el rol
       if (currentUser.role === 'user') {
         document.getElementById('user-section').classList.remove('hidden');
@@ -964,7 +1387,7 @@
         document.getElementById('admin-section').classList.remove('hidden');
         updateAdminSection();
       }
-      
+
       // Iniciar notificaciones periódicas si está habilitado
       if (currentUser.whatsapp) {
         notificationInterval = setInterval(() => {
@@ -977,16 +1400,16 @@
     function updateUserSection() {
       // Mostrar puntos acumulados
       document.getElementById('total-points').textContent = currentUser.points;
-      
+
       // Crear gráfico de puntos
       const userRequests = collectionRequests.filter(r => r.userId === currentUser.id);
       const ctx = document.getElementById('pointsChart').getContext('2d');
-      
+
       // Destruir el gráfico anterior si existe
       if (window.pointsChart) {
         window.pointsChart.destroy();
       }
-      
+
       window.pointsChart = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -997,8 +1420,6 @@
             backgroundColor: '#2e7d32'
           }]
         },
-
-        //AQUI FALTA REVISAR Y MODIFICAR EL CODIGO !!!!!
         options: {
           responsive: true,
           scales: {
@@ -1015,9 +1436,9 @@
       // Mostrar solicitudes pendientes
       const pendingRequests = collectionRequests.filter(r => r.status === 'pending');
       const listElement = document.getElementById('pending-requests-list');
-      
+
       listElement.innerHTML = '';
-      
+
       if (pendingRequests.length === 0) {
         listElement.innerHTML = '<li>No hay solicitudes pendientes</li>';
       } else {
@@ -1034,11 +1455,11 @@
           listElement.appendChild(li);
         });
       }
-      
+
       // Actualizar selector de solicitudes
       const requestSelect = document.getElementById('request-select');
       requestSelect.innerHTML = '<option value="">Seleccione una solicitud</option>';
-      
+
       const companyRequests = collectionRequests.filter(r => r.companyId === currentUser.id && r.status === 'accepted');
       companyRequests.forEach(request => {
         const user = users.find(u => u.id === request.userId);
@@ -1047,11 +1468,15 @@
         option.textContent = `${user.name} - ${request.date} - ${getWasteTypeName(request.type)}`;
         requestSelect.appendChild(option);
       });
-      
+
       // Crear gráfico de estadísticas
       const ctx = document.getElementById('companyStatsChart').getContext('2d');
-      
-      new Chart(ctx, {
+
+      if (window.companyStatsChart) {
+        window.companyStatsChart.destroy();
+      }
+
+      window.companyStatsChart = new Chart(ctx, {
         type: 'pie',
         data: {
           labels: ['Completadas', 'Pendientes', 'Rechazadas'],
@@ -1065,6 +1490,12 @@
           }]
         }
       });
+
+      // Actualizar lista de vehículos
+      renderVehiclesList();
+
+      // Actualizar lista de usuarios
+      searchUsers();
     }
 
     // Actualizar sección de administrador
@@ -1072,7 +1503,7 @@
       // Mostrar lista de usuarios
       const usersList = document.getElementById('users-list');
       usersList.innerHTML = '';
-      
+
       users.filter(u => u.role === 'user').forEach(user => {
         const li = document.createElement('li');
         li.innerHTML = `
@@ -1082,11 +1513,11 @@
         `;
         usersList.appendChild(li);
       });
-      
+
       // Mostrar lista de empresas
       const companiesList = document.getElementById('companies-list');
       companiesList.innerHTML = '';
-      
+
       users.filter(u => u.role === 'company').forEach(company => {
         const li = document.createElement('li');
         li.innerHTML = `
@@ -1095,15 +1526,15 @@
         `;
         companiesList.appendChild(li);
       });
-      
+
       // Mostrar todas las solicitudes
       const allRequestsList = document.getElementById('all-requests-list');
       allRequestsList.innerHTML = '';
-      
+
       collectionRequests.forEach(request => {
         const user = users.find(u => u.id === request.userId);
         const company = request.companyId ? users.find(u => u.id === request.companyId) : null;
-        
+
         const li = document.createElement('li');
         li.innerHTML = `
           <div>
@@ -1117,19 +1548,23 @@
         `;
         allRequestsList.appendChild(li);
       });
-      
+
       // Crear gráfico de solicitudes
       const ctx = document.getElementById('adminRequestsChart').getContext('2d');
-      
+
       const types = ['organico', 'inorganico', 'reciclable', 'peligroso'];
-      
-      new Chart(ctx, {
+
+      if (window.adminRequestsChart) {
+        window.adminRequestsChart.destroy();
+      }
+
+      window.adminRequestsChart = new Chart(ctx, {
         type: 'bar',
         data: {
           labels: types.map(getWasteTypeName),
           datasets: [{
             label: 'Solicitudes por tipo',
-            data: types.map(type => 
+            data: types.map(type =>
               collectionRequests.filter(r => r.type === type).length
             ),
             backgroundColor: '#2e7d32'
@@ -1151,15 +1586,15 @@
       const date = document.getElementById('collectionDate').value;
       const type = document.getElementById('wasteType').value;
       const weight = parseFloat(document.getElementById('wasteWeight').value);
-      
+
       if (!date || !type || !weight || weight <= 0) {
         Swal.fire("Error", "Por favor complete todos los campos correctamente", "error");
         return;
       }
-      
+
       // Calcular puntos según el tipo de residuo (Strategy pattern)
-      const points = calculatePoints(type, weight);
-      
+      const points = pointsCalculator.calculate(type, weight);
+
       const newRequest = {
         id: collectionRequests.length + 1,
         userId: currentUser.id,
@@ -1169,26 +1604,26 @@
         points,
         status: 'pending'
       };
-      
+
       collectionRequests.push(newRequest);
 
       // Actualizar puntos del usuario
       currentUser.points += points;
-      
+
       Swal.fire({
         title: "¡Solicitud creada!",
         text: `Se ha creado tu solicitud para el ${date}. Puntos ganados: ${points}`,
         icon: "success"
       }).then(() => {
         updateUserSection();
-        
+
         // Simular notificación a empresas
         if (currentUser.whatsapp) {
           setTimeout(() => {
-            Swal.fire({
-              title: "Notificación por WhatsApp",
-              text: "Las empresas recolectoras han sido notificadas de tu solicitud",
-              icon: "info"
+            notificationSystem.notify({
+              userId: currentUser.id,
+              phone: currentUser.phone,
+              message: `Tu solicitud de recolección para el ${date} ha sido registrada correctamente. Puntos obtenidos: ${points}`
             });
           }, 2000);
         }
@@ -1196,115 +1631,29 @@
     }
 
     // Función para aceptar solicitud (empresa)
-    function acceptRequest(requestId) {
-      const request = collectionRequests.find(r => r.id === requestId);
-      
-      if (request) {
-        request.status = 'accepted';
-        request.companyId = currentUser.id;
-        
-        Swal.fire({
-          title: "Solicitud aceptada",
-          text: "Has aceptado esta solicitud de recolección",
-          icon: "success"
-        }).then(() => {
-          updateCompanySection();
-          
-          // Notificar al usuario
-          const user = users.find(u => u.id === request.userId);
-          if (user && user.whatsapp) {
-            setTimeout(() => {
-              Swal.fire({
-                title: "Notificación por WhatsApp",
-                text: `La empresa ${currentUser.name} ha aceptado tu solicitud para el ${request.date}`,
-                icon: "info"
-              });
-            }, 2000);
-          }
-        });
-      }
-    }
+    let currentRequestId = null; // ID de la solicitud actual
 
-    // Funciones para gestión de usuarios por empresas
-    function searchUsers() {
-      const searchTerm = document.getElementById('user-search').value.toLowerCase();
-      const managedUsersList = document.getElementById('managed-users-list');
-      managedUsersList.innerHTML = '';
-      
-      let filteredUsers = users.filter(u => 
-        u.role === 'user' && 
-        u.status === 'active' && 
-        (u.name.toLowerCase().includes(searchTerm) || 
-         u.email.toLowerCase().includes(searchTerm))
-      );
-      
-      if (filteredUsers.length === 0) {
-        managedUsersList.innerHTML = '<li>No se encontraron usuarios</li>';
-        return;
-      }
-      
-      filteredUsers.forEach(user => {
-        const li = document.createElement('li');
-        li.innerHTML = `
-          <div>
-            <strong>${user.name}</strong> (${user.email})<br>
-            Teléfono: ${user.phone} | Puntos: ${user.points}
-          </div>
-          <button onclick="deleteUser(${user.id})">Eliminar</button>
-        `;
-        managedUsersList.appendChild(li);
-      });
-    }
-    
-    function deleteUser(userId) {
-      Swal.fire({
-        title: "¿Eliminar usuario?",
-        text: "Esta acción desactivará el usuario pero mantendrá sus datos históricos",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Sí, eliminar",
-        cancelButtonText: "Cancelar"
-      }).then((result) => {
-        if (result.isConfirmed) {
-          const user = users.find(u => u.id === userId);
-          if (user) {
-            user.status = 'inactive';
-            updateCompanySection();
-            
-            // Notificar al usuario
-            notificationSystem.notify({
-              userId: user.id,
-              phone: user.phone,
-              message: `Su cuenta en ARDI-MI ha sido desactivada por la empresa ${currentUser.name}. Contacte al administrador para más información.`
-            });
-            
-            Swal.fire("Éxito", "Usuario desactivado correctamente", "success");
-          }
-        }
-      });
-    }
-    
-    // Modificación en la función acceptRequest para asignar vehículo
     function acceptRequest(requestId) {
+      currentRequestId = requestId; // Guardar ID de la solicitud actual
       const request = collectionRequests.find(r => r.id === requestId);
-      
+
       if (request) {
         // Mostrar selector de vehículos disponibles
-        const availableVehicles = vehicles.filter(v => 
-          v.companyId === currentUser.id && 
+        const availableVehicles = vehicles.filter(v =>
+          v.companyId === currentUser.id &&
           v.status === 'active' &&
           (v.type === 'especial' || request.type !== 'peligroso')
         );
-        
+
         if (availableVehicles.length === 0) {
           Swal.fire("Error", "No hay vehículos disponibles para este tipo de residuo", "error");
           return;
         }
-        
-        let vehicleOptions = availableVehicles.map(v => 
+
+        let vehicleOptions = availableVehicles.map(v =>
           `<option value="${v.id}">${v.plate} - ${v.brand} ${v.model} (Capacidad: ${v.capacity}kg)</option>`
         ).join('');
-        
+
         Swal.fire({
           title: "Asignar vehículo",
           html: `
@@ -1326,14 +1675,14 @@
             request.status = 'accepted';
             request.companyId = currentUser.id;
             request.vehicleId = result.value.vehicleId;
-            
+
             Swal.fire({
               title: "Solicitud aceptada",
               text: "Has aceptado esta solicitud de recolección",
               icon: "success"
             }).then(() => {
               updateCompanySection();
-              
+
               // Notificar al usuario
               const user = users.find(u => u.id === request.userId);
               if (user && user.whatsapp) {
@@ -1354,41 +1703,103 @@
     function registerCollection() {
       const requestId = parseInt(document.getElementById('request-select').value);
       const weight = parseFloat(document.getElementById('collected-weight').value);
-      
+
       if (!requestId || !weight || weight <= 0) {
         Swal.fire("Error", "Por favor complete todos los campos correctamente", "error");
         return;
       }
-      
+
       const request = collectionRequests.find(r => r.id === requestId);
-      
+
       if (request) {
         request.status = 'completed';
         request.weight = weight;
-        
+
         // Recalcular puntos con el peso real
-        request.points = calculatePoints(request.type, weight);
-        
+        request.points = pointsCalculator.calculate(request.type, weight);
+
+        // Actualizar puntos del usuario
+        const user = users.find(u => u.id === request.userId);
+        if (user) {
+          user.points += request.points;
+        }
+
         Swal.fire({
           title: "¡Recolección registrada!",
           text: `Has registrado la recolección de ${weight}kg`,
           icon: "success"
         }).then(() => {
           updateCompanySection();
-          
+
           // Notificar al usuario
-          const user = users.find(u => u.id === request.userId);
           if (user && user.whatsapp) {
-            setTimeout(() => {
-              Swal.fire({
-                title: "Notificación por WhatsApp",
-                text: `La empresa ${currentUser.name} ha registrado la recolección de tus residuos. Puntos obtenidos: ${request.points}`,
-                icon: "info"
-              });
-            }, 2000);
+            notificationSystem.notify({
+              userId: user.id,
+              phone: user.phone,
+              message: `La empresa ${currentUser.name} ha registrado la recolección de tus residuos. Puntos obtenidos: ${request.points}`
+            });
           }
         });
       }
+    }
+
+    // Funciones para gestión de usuarios por empresas
+    function searchUsers() {
+      const searchTerm = document.getElementById('user-search').value.toLowerCase();
+      const managedUsersList = document.getElementById('managed-users-list');
+      managedUsersList.innerHTML = '';
+
+      let filteredUsers = users.filter(u =>
+        u.role === 'user' &&
+        u.status === 'active' &&
+        (u.name.toLowerCase().includes(searchTerm) ||
+          u.email.toLowerCase().includes(searchTerm))
+      );
+
+      if (filteredUsers.length === 0) {
+        managedUsersList.innerHTML = '<li>No se encontraron usuarios</li>';
+        return;
+      }
+
+      filteredUsers.forEach(user => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <div>
+            <strong>${user.name}</strong> (${user.email})<br>
+            Teléfono: ${user.phone} | Puntos: ${user.points}
+          </div>
+          <button onclick="deleteUser(${user.id})">Eliminar</button>
+        `;
+        managedUsersList.appendChild(li);
+      });
+    }
+
+    function deleteUser(userId) {
+      Swal.fire({
+        title: "¿Eliminar usuario?",
+        text: "Esta acción desactivará el usuario pero mantendrá sus datos históricos",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const user = users.find(u => u.id === userId);
+          if (user) {
+            user.status = 'inactive';
+            updateCompanySection();
+
+            // Notificar al usuario
+            notificationSystem.notify({
+              userId: user.id,
+              phone: user.phone,
+              message: `Su cuenta en ARDI-MI ha sido desactivada por la empresa ${currentUser.name}. Contacte al administrador para más información.`
+            });
+
+            Swal.fire("Éxito", "Usuario desactivado correctamente", "success");
+          }
+        }
+      });
     }
 
     // Función para filtrar datos en el panel de administración
@@ -1396,29 +1807,29 @@
       const startDate = document.getElementById('admin-start-date').value;
       const endDate = document.getElementById('admin-end-date').value;
       const filterType = document.getElementById('admin-filter-type').value;
-      
+
       let filteredRequests = [...collectionRequests];
-      
+
       if (startDate) {
         filteredRequests = filteredRequests.filter(r => r.date >= startDate);
       }
-      
+
       if (endDate) {
         filteredRequests = filteredRequests.filter(r => r.date <= endDate);
       }
-      
+
       if (filterType !== 'all') {
         filteredRequests = filteredRequests.filter(r => r.type === filterType);
       }
-      
+
       // Actualizar la lista de solicitudes
       const allRequestsList = document.getElementById('all-requests-list');
       allRequestsList.innerHTML = '';
-      
+
       filteredRequests.forEach(request => {
         const user = users.find(u => u.id === request.userId);
         const company = request.companyId ? users.find(u => u.id === request.companyId) : null;
-        
+
         const li = document.createElement('li');
         li.innerHTML = `
           <div>
@@ -1434,62 +1845,6 @@
       });
     }
 
-     // 4. Implementación mejorada del patrón Strategy para cálculo de puntos
-     class PointsCalculator {
-      constructor() {
-        this.strategies = {
-          organico: new OrganicWasteStrategy(),
-          inorganico: new InorganicWasteStrategy(),
-          reciclable: new RecyclableWasteStrategy(),
-          peligroso: new HazardousWasteStrategy()
-        };
-      }
-      
-      calculate(type, weight) {
-        const strategy = this.strategies[type];
-        if (!strategy) return 0;
-        return strategy.calculate(weight);
-      }
-    }
-
-    class OrganicWasteStrategy {
-      calculate(weight) {
-        return Math.floor(weight * 0.8); // 0.8 puntos/kg (según RF-12)
-      }
-    }
-
-    class InorganicWasteStrategy {
-      calculate(weight) {
-        return Math.floor(weight * 0.5); // 0.5 puntos/kg
-      }
-    }
-
-    class RecyclableWasteStrategy {
-      calculate(weight) {
-        return Math.floor(weight * 1); // 1 punto/kg
-      }
-    }
-
-    class HazardousWasteStrategy {
-      calculate(weight) {
-        return Math.floor(weight * 2); // 2 puntos/kg
-      }
-    }
-
-    // 5. Implementación de seguridad mejorada
-    function validateEmail(email) {
-      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return re.test(email);
-    }
-
-    function validatePassword(password) {
-      return password.length >= 6;
-    }
-
-    function validatePhone(phone) {
-      return /^\d{10,15}$/.test(phone);
-    }
-
     // Función para verificar notificaciones
     function checkForNotifications() {
       if (currentUser.role === 'user') {
@@ -1502,27 +1857,27 @@
           }
           return false;
         });
-        
+
         if (updatedRequests.length > 0 && currentUser.whatsapp) {
-          Swal.fire({
-            title: "Nueva notificación",
-            text: `Tienes ${updatedRequests.length} solicitudes aceptadas por empresas recolectoras`,
-            icon: "info"
+          notificationSystem.notify({
+            userId: currentUser.id,
+            phone: currentUser.phone,
+            message: `Tienes ${updatedRequests.length} solicitudes aceptadas por empresas recolectoras`
           });
         }
       } else if (currentUser.role === 'company') {
         // Verificar nuevas solicitudes
-        const newRequests = collectionRequests.filter(r => 
+        const newRequests = collectionRequests.filter(r =>
           r.status === 'pending' && !r.notified
         );
-        
+
         if (newRequests.length > 0 && currentUser.whatsapp) {
           newRequests.forEach(r => r.notified = true);
-          
-          Swal.fire({
-            title: "Nuevas solicitudes",
-            text: `Hay ${newRequests.length} nuevas solicitudes de recolección disponibles`,
-            icon: "info"
+
+          notificationSystem.notify({
+            userId: currentUser.id,
+            phone: currentUser.phone,
+            message: `Hay ${newRequests.length} nuevas solicitudes de recolección disponibles`
           });
         }
       }
@@ -1538,7 +1893,7 @@
       };
       return names[type] || type;
     }
-    
+
     function getStatusName(status) {
       const names = {
         pending: 'Pendiente',
@@ -1548,38 +1903,46 @@
       };
       return names[status] || status;
     }
-    
+
+    // Funciones de validación
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+
+    function validatePassword(password) {
+      return password.length >= 6;
+    }
+
+    function validatePhone(phone) {
+      return /^\d{10,15}$/.test(phone);
+    }
+
     // Funciones de ejemplo para exportación
     function exportUsersToPDF() {
       Swal.fire("PDF Generado", "Se ha creado el reporte de usuarios en PDF", "success");
     }
-    
+
     function exportRequestsToExcel() {
       Swal.fire("Excel Generado", "Se ha creado el reporte de solicitudes en Excel", "success");
     }
-    
+
     // Funciones de ejemplo para edición
     function editUser(userId) {
       Swal.fire("Editar Usuario", `Editar usuario con ID: ${userId}`, "info");
     }
-    
+
     function editCompany(companyId) {
       Swal.fire("Editar Empresa", `Editar empresa con ID: ${companyId}`, "info");
     }
-    
+
     function editRequest(requestId) {
       Swal.fire("Editar Solicitud", `Editar solicitud con ID: ${requestId}`, "info");
-    }
-
-    // Actualización de la sección de empresa para incluir vehículos
-    function updateCompanySection() {
-      // Código existente...
-      renderVehiclesList();
-      searchUsers(); // Cargar lista de usuarios inicial
     }
 
     // Inicializar la aplicación mostrando el login
     showLoginForm();
   </script>
 </body>
+
 </html>
