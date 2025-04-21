@@ -1,0 +1,1 @@
+En esta nueva rama, es donde se estan cargando los mismos datos pero desde la conexión con el github y el visual studio code. Aqui claramente tambien existiran cambios podrian editar aqui mismo si lo desean por si el caso les da al de miedo dañar el codigo de la rama principal o la rama MAIN
