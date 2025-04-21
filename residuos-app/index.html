@@ -275,6 +275,23 @@
         margin: 20% auto;
       }
     }
+
+    /*Estilos Swal*/
+    .swal2-popup .form-group {
+  margin-bottom: 1rem;
+}
+
+.swal2-popup .form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.swal2-popup .swal2-input {
+  width: 100%;
+  margin: 0.5rem 0;
+}
+
   </style>
 </head>
 <body>
@@ -485,6 +502,305 @@
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
+    //Variables globales
+   /* let currentEditingUserId = null;
+    let currentEditingCompanyId = null;
+    let currentEditingRequestId = null;
+
+    //Función para editar usuarios (admin)
+    function editUser(userId) {
+  currentEditingUserId = userId;
+  const user = users.find(u => u.id === userId);
+  
+  Swal.fire({
+    title: `Editar Usuario: ${user.name}`,
+    html: `
+      <div style="text-align: left;">
+        <div class="form-group">
+          <label for="edit-user-name">Nombre:</label>
+          <input id="edit-user-name" class="swal2-input" value="${user.name}">
+        </div>
+        <div class="form-group">
+          <label for="edit-user-email">Email:</label>
+          <input id="edit-user-email" class="swal2-input" value="${user.email}" type="email">
+        </div>
+        <div class="form-group">
+          <label for="edit-user-phone">Teléfono:</label>
+          <input id="edit-user-phone" class="swal2-input" value="${user.phone}">
+        </div>
+        <div class="form-group">
+          <label for="edit-user-points">Puntos:</label>
+          <input id="edit-user-points" class="swal2-input" value="${user.points}" type="number">
+        </div>
+        <div class="form-group">
+          <label for="edit-user-status">Estado:</label>
+          <select id="edit-user-status" class="swal2-input">
+            <option value="active" ${user.status === 'active' ? 'selected' : ''}>Activo</option>
+            <option value="inactive" ${user.status === 'inactive' ? 'selected' : ''}>Inactivo</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="edit-user-whatsapp">
+            <input type="checkbox" id="edit-user-whatsapp" ${user.whatsapp ? 'checked' : ''}>
+            Recibir notificaciones por WhatsApp
+          </label>
+        </div>
+      </div>
+    `,
+    showCancelButton: true,
+    confirmButtonText: 'Guardar',
+    cancelButtonText: 'Cancelar',
+    preConfirm: () => {
+      return {
+        name: document.getElementById('edit-user-name').value,
+        email: document.getElementById('edit-user-email').value,
+        phone: document.getElementById('edit-user-phone').value,
+        points: parseInt(document.getElementById('edit-user-points').value),
+        status: document.getElementById('edit-user-status').value,
+        whatsapp: document.getElementById('edit-user-whatsapp').checked
+      };
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const updatedData = result.value;
+      
+      // Validaciones
+      if (!updatedData.name || !updatedData.email) {
+        Swal.fire("Error", "Nombre y email son obligatorios", "error");
+        return;
+      }
+      
+      if (!validateEmail(updatedData.email)) {
+        Swal.fire("Error", "Email no válido", "error");
+        return;
+      }
+      
+      // Actualizar usuario
+      const userIndex = users.findIndex(u => u.id === userId);
+      if (userIndex !== -1) {
+        users[userIndex] = {
+          ...users[userIndex],
+          name: updatedData.name,
+          email: updatedData.email,
+          phone: updatedData.phone,
+          points: updatedData.points,
+          status: updatedData.status,
+          whatsapp: updatedData.whatsapp
+        };
+        
+        Swal.fire("Éxito", "Usuario actualizado correctamente", "success");
+        updateAdminSection(); // Actualizar la vista
+      }
+    }
+  });
+}
+
+//Funcion para editar empresas(admin)
+function editCompany(companyId) {
+  currentEditingCompanyId = companyId;
+  const company = users.find(u => u.id === companyId && u.role === 'company');
+  
+  Swal.fire({
+    title: `Editar Empresa: ${company.name}`,
+    html: `
+      <div style="text-align: left;">
+        <div class="form-group">
+          <label for="edit-company-name">Nombre:</label>
+          <input id="edit-company-name" class="swal2-input" value="${company.name}">
+        </div>
+        <div class="form-group">
+          <label for="edit-company-email">Email:</label>
+          <input id="edit-company-email" class="swal2-input" value="${company.email}" type="email">
+        </div>
+        <div class="form-group">
+          <label for="edit-company-phone">Teléfono:</label>
+          <input id="edit-company-phone" class="swal2-input" value="${company.phone}">
+        </div>
+        <div class="form-group">
+          <label for="edit-company-status">Estado:</label>
+          <select id="edit-company-status" class="swal2-input">
+            <option value="active" ${company.status === 'active' ? 'selected' : ''}>Activo</option>
+            <option value="inactive" ${company.status === 'inactive' ? 'selected' : ''}>Inactivo</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="edit-company-whatsapp">
+            <input type="checkbox" id="edit-company-whatsapp" ${company.whatsapp ? 'checked' : ''}>
+            Recibir notificaciones por WhatsApp
+          </label>
+        </div>
+      </div>
+    `,
+    showCancelButton: true,
+    confirmButtonText: 'Guardar',
+    cancelButtonText: 'Cancelar',
+    preConfirm: () => {
+      return {
+        name: document.getElementById('edit-company-name').value,
+        email: document.getElementById('edit-company-email').value,
+        phone: document.getElementById('edit-company-phone').value,
+        status: document.getElementById('edit-company-status').value,
+        whatsapp: document.getElementById('edit-company-whatsapp').checked
+      };
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const updatedData = result.value;
+      
+      // Validaciones
+      if (!updatedData.name || !updatedData.email) {
+        Swal.fire("Error", "Nombre y email son obligatorios", "error");
+        return;
+      }
+      
+      if (!validateEmail(updatedData.email)) {
+        Swal.fire("Error", "Email no válido", "error");
+        return;
+      }
+      
+      // Actualizar empresa
+      const companyIndex = users.findIndex(u => u.id === companyId);
+      if (companyIndex !== -1) {
+        users[companyIndex] = {
+          ...users[companyIndex],
+          name: updatedData.name,
+          email: updatedData.email,
+          phone: updatedData.phone,
+          status: updatedData.status,
+          whatsapp: updatedData.whatsapp
+        };
+        
+        Swal.fire("Éxito", "Empresa actualizada correctamente", "success");
+        updateAdminSection(); // Actualizar la vista
+        
+        // Si la empresa editada es la actualmente logueada, actualizar datos
+        if (currentUser && currentUser.id === companyId) {
+          currentUser = users[companyIndex];
+        }
+      }
+    }
+  });
+}
+
+//Función para editar solicitudes (admin)
+function editRequest(requestId) {
+  currentEditingRequestId = requestId;
+  const request = collectionRequests.find(r => r.id === requestId);
+  const user = users.find(u => u.id === request.userId);
+  const company = request.companyId ? users.find(u => u.id === request.companyId) : null;
+  
+  Swal.fire({
+    title: `Editar Solicitud #${request.id}`,
+    html: `
+      <div style="text-align: left;">
+        <div class="form-group">
+          <label>Usuario: ${user.name}</label>
+        </div>
+        <div class="form-group">
+          <label for="edit-request-date">Fecha:</label>
+          <input id="edit-request-date" class="swal2-input" type="date" value="${request.date}">
+        </div>
+        <div class="form-group">
+          <label for="edit-request-type">Tipo:</label>
+          <select id="edit-request-type" class="swal2-input">
+            <option value="organico" ${request.type === 'organico' ? 'selected' : ''}>Orgánico</option>
+            <option value="inorganico" ${request.type === 'inorganico' ? 'selected' : ''}>Inorgánico</option>
+            <option value="reciclable" ${request.type === 'reciclable' ? 'selected' : ''}>Reciclable</option>
+            <option value="peligroso" ${request.type === 'peligroso' ? 'selected' : ''}>Peligroso</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="edit-request-weight">Peso (kg):</label>
+          <input id="edit-request-weight" class="swal2-input" type="number" step="0.1" min="0.1" value="${request.weight}">
+        </div>
+        <div class="form-group">
+          <label for="edit-request-status">Estado:</label>
+          <select id="edit-request-status" class="swal2-input">
+            <option value="pending" ${request.status === 'pending' ? 'selected' : ''}>Pendiente</option>
+            <option value="accepted" ${request.status === 'accepted' ? 'selected' : ''}>Aceptada</option>
+            <option value="completed" ${request.status === 'completed' ? 'selected' : ''}>Completada</option>
+            <option value="rejected" ${request.status === 'rejected' ? 'selected' : ''}>Rechazada</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="edit-request-company">Empresa Asignada:</label>
+          <select id="edit-request-company" class="swal2-input">
+            <option value="">Ninguna</option>
+            ${users.filter(u => u.role === 'company' && u.status === 'active')
+              .map(c => `<option value="${c.id}" ${request.companyId === c.id ? 'selected' : ''}>${c.name}</option>`)
+              .join('')}
+          </select>
+        </div>
+      </div>
+    `,
+    showCancelButton: true,
+    confirmButtonText: 'Guardar',
+    cancelButtonText: 'Cancelar',
+    preConfirm: () => {
+      return {
+        date: document.getElementById('edit-request-date').value,
+        type: document.getElementById('edit-request-type').value,
+        weight: parseFloat(document.getElementById('edit-request-weight').value),
+        status: document.getElementById('edit-request-status').value,
+        companyId: document.getElementById('edit-request-company').value || null
+      };
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const updatedData = result.value;
+      
+      // Validaciones
+      if (!updatedData.date || !updatedData.type || !updatedData.weight || updatedData.weight <= 0) {
+        Swal.fire("Error", "Complete todos los campos correctamente", "error");
+        return;
+      }
+      
+      // Actualizar solicitud
+      const requestIndex = collectionRequests.findIndex(r => r.id === requestId);
+      if (requestIndex !== -1) {
+        // Recalcular puntos si cambió el tipo o peso
+        const originalPoints = collectionRequests[requestIndex].points;
+        let newPoints = originalPoints;
+        
+        if (collectionRequests[requestIndex].type !== updatedData.type || 
+            collectionRequests[requestIndex].weight !== updatedData.weight) {
+          newPoints = pointsCalculator.calculate(updatedData.type, updatedData.weight);
+        }
+        
+        collectionRequests[requestIndex] = {
+          ...collectionRequests[requestIndex],
+          date: updatedData.date,
+          type: updatedData.type,
+          weight: updatedData.weight,
+          status: updatedData.status,
+          companyId: updatedData.companyId,
+          points: newPoints
+        };
+        
+        // Actualizar puntos del usuario si cambió
+        if (newPoints !== originalPoints) {
+          const userIndex = users.findIndex(u => u.id === request.userId);
+          if (userIndex !== -1) {
+            users[userIndex].points += (newPoints - originalPoints);
+          }
+        }
+        
+        Swal.fire("Éxito", "Solicitud actualizada correctamente", "success");
+        updateAdminSection(); // Actualizar la vista
+        
+        // Notificar al usuario si está habilitado
+        if (user.whatsapp) {
+          notificationSystem.notify({
+            userId: user.id,
+            phone: user.phone,
+            message: `Tu solicitud #${requestId} ha sido actualizada. Nuevo estado: ${getStatusName(updatedData.status)}`
+          });
+        }
+      }
+    }
+  });
+}*/
+
     // Datos de ejemplo para simular la base de datos
     const users = [
       { id: 1, name: "Usuario Demo", email: "user@example.com", password: "123456", role: "user", phone: "1234567890", points: 150, whatsapp: true, status: 'active' },
@@ -672,84 +988,147 @@
     }
     
     function saveVehicle() {
-      const plate = document.getElementById('vehicle-plate').value;
-      const brand = document.getElementById('vehicle-brand').value;
-      const model = document.getElementById('vehicle-model').value;
-      const capacity = parseInt(document.getElementById('vehicle-capacity').value);
-      const type = document.getElementById('vehicle-type').value;
-      
-      if (!plate || !brand || !model || !capacity) {
-        Swal.fire("Error", "Por favor complete todos los campos", "error");
-        return;
-      }
-      
-      if (currentEditingVehicleId) {
-        // Editar vehículo existente
-        const index = vehicles.findIndex(v => v.id === currentEditingVehicleId);
-        if (index !== -1) {
-          vehicles[index] = {
-            ...vehicles[index],
-            plate,
-            brand,
-            model,
-            capacity,
-            type
-          };
-          Swal.fire("Éxito", "Vehículo actualizado correctamente", "success");
-        }
-      } else {
-        // Crear nuevo vehículo
-        const newVehicle = {
-          id: vehicles.length + 1,
-          companyId: currentUser.id,
-          plate,
-          brand,
-          model,
-          capacity,
-          type,
-          status: 'active'
-        };
-        vehicles.push(newVehicle);
-        Swal.fire("Éxito", "Vehículo añadido correctamente", "success");
-      }
-      
-      closeVehicleModal();
-      updateCompanySection();
-    }
+  const plate = document.getElementById('vehicle-plate').value;
+  const brand = document.getElementById('vehicle-brand').value;
+  const model = document.getElementById('vehicle-model').value;
+  const capacity = parseInt(document.getElementById('vehicle-capacity').value);
+  const type = document.getElementById('vehicle-type').value;
+  
+  // Validación mejorada
+  if (!plate || !brand || !model || !capacity || isNaN(capacity)) {
+    Swal.fire("Error", "Por favor complete todos los campos correctamente", "error");
+    return;
+  }
 
-    function renderVehiclesList() {
-      const container = document.getElementById('vehicles-list');
-      container.innerHTML = '';
-      
-      const companyVehicles = vehicles.filter(v => v.companyId === currentUser.id);
-      
-      if (companyVehicles.length === 0) {
-        container.innerHTML = '<p>No hay vehículos registrados</p>';
-        return;
-      }
-      
-      companyVehicles.forEach(vehicle => {
-        const card = document.createElement('div');
-        card.className = 'vehicle-card';
-        
-        const statusClass = `status-${vehicle.status}`;
-        
-        card.innerHTML = `
-          <h4>${vehicle.brand} ${vehicle.model} <span class="status-badge ${statusClass}">${vehicle.status === 'active' ? 'Activo' : 'Inactivo'}</span></h4>
-          <div class="vehicle-property"><strong>Placa:</strong> ${vehicle.plate}</div>
-          <div class="vehicle-property"><strong>Capacidad:</strong> ${vehicle.capacity} kg</div>
-          <div class="vehicle-property"><strong>Tipo:</strong> ${vehicle.type}</div>
-          <div class="vehicle-actions">
-            <button onclick="showAddVehicleForm(${vehicle.id})">Editar</button>
-            <button onclick="toggleVehicleStatus(${vehicle.id})">${vehicle.status === 'active' ? 'Desactivar' : 'Activar'}</button>
-            <button onclick="deleteVehicle(${vehicle.id})">Eliminar</button>
-          </div>
-        `;
-        
-        container.appendChild(card);
-      });
+  if (currentEditingVehicleId) {
+    // Editar vehículo existente
+    const index = vehicles.findIndex(v => v.id === currentEditingVehicleId);
+    if (index !== -1) {
+      vehicles[index] = {
+        ...vehicles[index],
+        plate,
+        brand,
+        model,
+        capacity,
+        type
+      };
+      Swal.fire("Éxito", "Vehículo actualizado correctamente", "success");
     }
+  } else {
+    // Crear nuevo vehículo
+    const newVehicle = {
+      id: vehicles.length > 0 ? Math.max(...vehicles.map(v => v.id)) + 1 : 1, // Generar ID autoincremental
+      companyId: currentUser.id,
+      plate,
+      brand,
+      model,
+      capacity,
+      type,
+      status: 'active'
+    };
+    vehicles.push(newVehicle);
+    Swal.fire("Éxito", "Vehículo añadido correctamente", "success");
+  }
+  
+  closeVehicleModal(); //Cierra el modelo de vehículo 
+  renderVehiclesList(); // Actualizar la lista visible
+  updateRequestSelectors(); // Actualizar selectores de vehículos en formularios
+}
+
+function renderVehiclesList() {
+  const container = document.getElementById('vehicles-list');
+  container.innerHTML = '';
+  
+  const companyVehicles = vehicles.filter(v => v.companyId === currentUser.id);
+  
+  if (companyVehicles.length === 0) {
+    container.innerHTML = '<p class="no-vehicles">No hay vehículos registrados</p>';
+    return;
+  }
+  
+  function updateRequestSelectors() {
+  // Actualizar selector en el modal de aceptar solicitudes (si existe)
+  const vehicleAssignmentSelect = document.getElementById('vehicle-assignment');
+  if (vehicleAssignmentSelect) {
+    // Guardar el valor seleccionado actual
+    const currentSelection = vehicleAssignmentSelect.value;
     
+    // Obtener vehículos disponibles
+    const availableVehicles = vehicles.filter(v => 
+      v.companyId === currentUser.id && 
+      v.status === 'active'
+    );
+    
+    // Reconstruir el selector
+    vehicleAssignmentSelect.innerHTML = availableVehicles.map(v => 
+      `<option value="${v.id}" ${v.id.toString() === currentSelection ? 'selected' : ''}>
+        ${v.plate} - ${v.brand} ${v.model} (${v.capacity}kg)
+      </option>`
+    ).join('');
+  }
+  
+  // Actualizar selector en el dashboard de empresa
+  const requestSelect = document.getElementById('request-select');
+  if (requestSelect) {
+    const selectedValue = requestSelect.value;
+    requestSelect.innerHTML = '<option value="">Seleccione una solicitud</option>';
+    
+    const companyRequests = collectionRequests.filter(r => 
+      r.companyId === currentUser.id && 
+      (r.status === 'accepted' || r.status === 'completed')
+    );
+    
+    companyRequests.forEach(request => {
+      const user = users.find(u => u.id === request.userId);
+      const option = document.createElement('option');
+      option.value = request.id;
+      option.textContent = `${user.name} - ${request.date} - ${getWasteTypeName(request.type)}`;
+      if (request.id.toString() === selectedValue) {
+        option.selected = true;
+      }
+      requestSelect.appendChild(option);
+    });
+  }
+}
+
+  companyVehicles.forEach(vehicle => {
+    const card = document.createElement('div');
+    card.className = 'vehicle-card';
+    
+    const statusClass = `status-${vehicle.status}`;
+    const typeName = {
+      'compacto': 'Compacto',
+      'mediano': 'Mediano', 
+      'grande': 'Grande',
+      'especial': 'Especial'
+    }[vehicle.type] || vehicle.type;
+    
+    card.innerHTML = `
+      <h4>${vehicle.brand} ${vehicle.model} 
+        <span class="status-badge ${statusClass}">
+          ${vehicle.status === 'active' ? 'Activo' : 'Inactivo'}
+        </span>
+      </h4>
+      <div class="vehicle-property"><strong>Placa:</strong> ${vehicle.plate}</div>
+      <div class="vehicle-property"><strong>Tipo:</strong> ${typeName}</div>
+      <div class="vehicle-property"><strong>Capacidad:</strong> ${vehicle.capacity} kg</div>
+      <div class="vehicle-actions">
+        <button onclick="showAddVehicleForm(${vehicle.id})">
+          <i class="fas fa-edit"></i> Editar
+        </button>
+        <button onclick="toggleVehicleStatus(${vehicle.id})">
+          <i class="fas fa-power-off"></i> ${vehicle.status === 'active' ? 'Desactivar' : 'Activar'}
+        </button>
+        <button onclick="deleteVehicle(${vehicle.id})">
+          <i class="fas fa-trash"></i> Eliminar
+        </button>
+      </div>
+    `;
+    
+    container.appendChild(card);
+  });
+}
+
     function toggleVehicleStatus(vehicleId) {
       const vehicle = vehicles.find(v => v.id === vehicleId);
       if (vehicle) {
@@ -757,6 +1136,7 @@
         updateCompanySection();
         Swal.fire("Éxito", `Vehículo ${vehicle.status === 'active' ? 'activado' : 'desactivado'}`, "success");
       }
+      updateRequestSelectors(); // Actualizar selectores de vehículos en formularios
     }
     
     function deleteVehicle(vehicleId) {
@@ -782,6 +1162,7 @@
               Swal.fire("Éxito", "Vehículo eliminado correctamente", "success");
             }
           }
+          updateRequestSelectors(); // Actualizar selectores de vehículos en formularios
         }
       });
     }
@@ -1223,7 +1604,10 @@
     }
 
     // Función para aceptar solicitud (empresa)
+    let currentRequestId = null; // ID de la solicitud actual
+
     function acceptRequest(requestId) {
+      currentRequestId = requestId; // Guardar ID de la solicitud actual
       const request = collectionRequests.find(r => r.id === requestId);
       
       if (request) {
