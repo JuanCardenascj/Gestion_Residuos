@@ -15,12 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('role')->default('user'); //user, company, admin
-            $table->string('phone')->nullable();
-            $table->integer('points')->default(0);
-            $table->boolean('whatsapp_notification')->default(false);
-            $table->string('status')->default('active'); //active, inactive, banned
             $table->rememberToken();
             $table->timestamps();
         });

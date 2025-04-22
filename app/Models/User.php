@@ -18,24 +18,10 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role', 'phone', 
-        'points', 'whatsapp_notification', 'status'
+        'name',
+        'email',
+        'password',
     ];
-
-    public function requests()
-    {
-        return $this->hasMany(CollectionRequest::class, 'user_id');
-    }
-
-    public function companyRequests()
-    {
-        return $this->hasMany(CollectionRequest::class, 'company_id');
-    }
-
-    public function vehicles()
-    {
-        return $this->hasMany(Vehicle::class, 'company_id');
-    }
 
     /**
      * The attributes that should be hidden for serialization.
