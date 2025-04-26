@@ -6,7 +6,7 @@
   <title>ARDI-MI ♻️ - Login</title>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
+ <style>
     :root {
       --primary: #2e7d32;
       --secondary: #81c784;
@@ -16,6 +16,8 @@
     
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-position: center;
+      opacity: 1.0;
       background-color: #f5f5f5;
       margin: 0;
       padding: 0;
@@ -33,6 +35,21 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       overflow: hidden;
     }
+
+    .container::after {
+    content: "";
+    background: url('imagenes/Logo 1.1.png') no-repeat;
+    opacity: 0.1; /* Ajusta la transparencia */
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 9999;
+    pointer-events: none; /* Permite interactuar con los elementos debajo */
+    background-size: 900px; /* Tamaño de la marca de agua */
+    background-position: center; /* Posición */
+}
     
     .header {
       background-color: var(--primary);
@@ -255,6 +272,7 @@
     .close:hover {
       color: black;
     }
+
     
     @media (max-width: 768px) {
       .container {
