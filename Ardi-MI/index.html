@@ -1,0 +1,1781 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ARDI-MI ♻️ - Login</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+ <style>
+    :root {
+      --primary: #2e7d32;
+      --secondary: #81c784;
+      --dark: #1b5e20;
+      --light: #f1f8e9;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-position: center;
+      opacity: 1.0;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 400px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .container::after {
+    content: "";
+    background: url('imagenes/Logo 1.1.png') no-repeat;
+    opacity: 0.1; /* Ajusta la transparencia */
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 9999;
+    pointer-events: none; /* Permite interactuar con los elementos debajo */
+    background-size: 900px; /* Tamaño de la marca de agua */
+    background-position: center; /* Posición */
+}
+    
+    .header {
+      background-color: var(--primary);
+      color: white;
+      padding: 20px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .logo {
+      height: 40px;
+      width: auto;
+    }
+    
+    h1 {
+      color: var(--dark);
+      text-align: center;
+      margin: 20px 0;
+    }
+    
+    #form-section {
+      padding: 20px;
+    }
+    
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+    
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+      transition: background-color 0.3s;
+    }
+    
+    button:hover {
+      background-color: var(--dark);
+    }
+    
+    .login-options {
+      margin-top: 15px;
+      text-align: center;
+    }
+    
+    .login-options a {
+      color: var(--primary);
+      text-decoration: none;
+      display: block;
+      margin: 5px 0;
+    }
+    
+    .login-options a:hover {
+      text-decoration: underline;
+    }
+    
+    .whatsapp-option {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin: 10px 0;
+    }
+    
+    .hidden {
+      display: none;
+    }
+
+    /* Estilos para el dashboard */
+    #dashboard-container {
+      width: 100%;
+      max-width: 1200px;
+      padding: 20px;
+      margin: 0 auto;
+    }
+    
+    .section {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .chart-container {
+      margin: 20px 0;
+      position: relative;
+      height: 300px;
+    }
+    
+    #pending-requests-list, #users-list, #companies-list, #all-requests-list, #managed-users-list {
+      list-style: none;
+      padding: 0;
+    }
+    
+    #pending-requests-list li, #users-list li, #companies-list li, #all-requests-list li, #managed-users-list li {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .filter-section {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+    
+    .filter-section input, .filter-section select {
+      flex: 1;
+      min-width: 150px;
+    }
+    
+    .filter-section button {
+      width: auto;
+      padding: 0 20px;
+    }
+    
+    .logout-btn {
+      background-color: #d32f2f;
+      margin-top: 20px;
+    }
+    
+    .logout-btn:hover {
+      background-color: #b71c1c;
+    }
+
+    /* Estilos para los Vehículos de Recolección */
+    .vehicle-card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+      background-color: #f9f9f9;
+    }
+    
+    .vehicle-card h4 {
+      margin-top: 0;
+      color: var(--dark);
+    }
+    
+    .vehicle-property {
+      margin: 5px 0;
+    }
+    
+    .vehicle-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    
+    .status-badge {
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    
+    .status-pending {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+    
+    .status-active {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    
+    .status-inactive {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+
+    /* Estilos para el modal de vehículos */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+    }
+    
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 500px;
+      border-radius: 8px;
+    }
+    
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    
+    .close:hover {
+      color: black;
+    }
+
+    
+    @media (max-width: 768px) {
+      .container {
+        margin: 10px;
+        border-radius: 0;
+      }
+      
+      .filter-section {
+        flex-direction: column;
+      }
+      
+      .filter-section button {
+        width: 100%;
+      }
+      
+      .modal-content {
+        width: 90%;
+        margin: 20% auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Página de Login -->
+  <div class="container" id="login-page">
+    <div class="header">
+      <img src="/imagenes/Logo 1.1.png" alt="logo" class="logo">
+      <span>ARDI-MI ♻️</span>
+    </div>
+    <h1>Gestión de Residuos</h1>
+
+    <div id="form-section">
+      <h2>Iniciar Sesión</h2>
+      <input type="email" id="loginEmail" placeholder="Correo electrónico" required />
+      <input type="password" id="loginPassword" placeholder="Contraseña" required />
+      
+      <div class="whatsapp-option">
+        <input type="checkbox" id="whatsappNotification">
+        <label for="whatsappNotification">Recibir notificaciones por WhatsApp</label>
+      </div>
+      
+      <button onclick="login()">Ingresar</button>
+
+      <div class="login-options">
+        <a href="#" onclick="showPasswordRecovery()">¿Olvidaste tu contraseña?</a>
+        <a href="#" onclick="showRegisterForm()">¿Todavía no tienes una cuenta? Regístrate</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Página de Recuperación de Contraseña -->
+  <div class="container hidden" id="password-page">
+    <div class="header">
+      <img src="/imagenes/Logo 1.1.png" alt="logo" class="logo">
+      <span>ARDI-MI ♻️</span>
+    </div>
+
+    <div id="form-section">
+      <h2>Recuperar Contraseña</h2>
+      <input type="email" id="recoveryEmail" placeholder="Correo electrónico" required />
+      <button onclick="sendPasswordRecovery()">Enviar Enlace</button>
+      <button class="logout-btn" onclick="showLoginForm()">Volver al Login</button>
+    </div>
+  </div>
+
+  <!-- Página de Registro -->
+  <div class="container hidden" id="register-page">
+    <div class="header">
+      <img src="/imagenes/Logo 1.1.png" alt="logo" class="logo">
+      <span>ARDI-MI ♻️</span>
+    </div>
+
+    <div id="form-section">
+      <h2>Registro de Usuario</h2>
+      <input type="text" id="registerName" placeholder="Nombre completo" required />
+      <input type="email" id="registerEmail" placeholder="Correo electrónico" required />
+      <input type="password" id="registerPassword" placeholder="Contraseña" required />
+      <input type="password" id="registerConfirmPassword" placeholder="Confirmar contraseña" required />
+      <input type="tel" id="registerPhone" placeholder="Teléfono (para notificaciones)" />
+      
+      <select id="registerRole">
+        <option value="user">Usuario</option>
+        <option value="company">Empresa Recolectora</option>
+      </select>
+      
+      <div class="whatsapp-option">
+        <input type="checkbox" id="registerWhatsappNotification" checked>
+        <label for="registerWhatsappNotification">Recibir notificaciones por WhatsApp</label>
+      </div>
+      
+      <button onclick="register()">Registrarse</button>
+      <button class="logout-btn" onclick="showLoginForm()">Volver al Login</button>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div class="container hidden" id="dashboard-container">
+    <div class="header">
+      <img src="/imagenes/Logo 1.1.png" alt="logo" class="logo">
+      <span>ARDI-MI ♻️ - <span id="user-role-display"></span></span>
+    </div>
+    <h1 id="welcome-message"></h1>
+
+    <!-- Sección Usuario -->
+    <div id="user-section" class="section hidden">
+      <h2><i class="fas fa-trash-alt"></i> Solicitar Recolección</h2>
+      <input type="date" id="collectionDate" required />
+      <select id="wasteType" required>
+        <option value="">Seleccione tipo de residuo</option>
+        <option value="organico">Orgánico 🍂</option>
+        <option value="inorganico">Inorgánico 🏗️</option>
+        <option value="reciclable">Reciclable ♻️</option>
+        <option value="peligroso">Peligroso ☣️</option>
+      </select>
+      <input type="number" id="wasteWeight" placeholder="Peso (kg)" min="0.1" step="0.1" required />
+      <button onclick="createCollectionRequest()">Solicitar Recolección</button>
+      
+      <div class="section">
+        <h3><i class="fas fa-coins"></i> Puntos Acumulados</h3>
+        <p>Total de puntos: <strong id="total-points">0</strong></p>
+        <div class="chart-container">
+          <canvas id="pointsChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección Empresa -->
+    <div id="company-section" class="section hidden">
+      <h2><i class="fas fa-truck"></i> Solicitudes Pendientes</h2>
+      <ul id="pending-requests-list"></ul>
+      
+      <h3><i class="fas fa-weight-hanging"></i> Registrar Recolección</h3>
+      <div class="filter-section">
+        <select id="request-select">
+          <option value="">Seleccione una solicitud</option>
+        </select>
+        <input type="number" id="collected-weight" placeholder="Peso recolectado (kg)" min="0.1" step="0.1">
+        <button onclick="registerCollection()">Registrar</button>
+      </div>
+      
+      <div class="section">
+        <h3><i class="fas fa-chart-line"></i> Estadísticas</h3>
+        <div class="chart-container">
+          <canvas id="companyStatsChart"></canvas>
+        </div>
+      </div>
+      
+      <div class="section">
+        <h3><i class="fas fa-truck-moving"></i> Gestión de Vehículos Recolectores</h3>
+        <button onclick="showAddVehicleForm()"><i class="fas fa-plus"></i> Añadir Vehículo</button>
+        <div id="vehicles-list"></div>
+      </div>
+      
+      <!-- Nueva sección para gestión de usuarios -->
+      <div class="section">
+        <h3><i class="fas fa-users-cog"></i> Gestión de Usuarios</h3>
+        <div class="filter-section">
+          <input type="text" id="user-search" placeholder="Buscar usuario...">
+          <button onclick="searchUsers()">Buscar</button>
+        </div>
+        <ul id="managed-users-list"></ul>
+      </div>
+    </div>
+    
+    <!-- Modal para añadir/editar vehículo -->
+    <div id="vehicle-modal" class="modal hidden">
+      <div class="modal-content">
+        <span class="close" onclick="closeVehicleModal()">&times;</span>
+        <h3 id="vehicle-modal-title">Añadir Nuevo Vehículo</h3>
+        <input type="text" id="vehicle-plate" placeholder="Placa" required>
+        <input type="text" id="vehicle-brand" placeholder="Marca" required>
+        <input type="text" id="vehicle-model" placeholder="Modelo" required>
+        <input type="number" id="vehicle-capacity" placeholder="Capacidad (kg)" min="100" required>
+        <select id="vehicle-type">
+          <option value="compacto">Compacto</option>
+          <option value="mediano">Mediano</option>
+          <option value="grande">Grande</option>
+          <option value="especial">Especial (peligrosos)</option>
+        </select>
+        <button onclick="saveVehicle()">Guardar Vehículo</button>
+      </div>
+    </div>
+
+    <!-- Sección Administrador -->
+    <div id="admin-section" class="section hidden">
+      <h2><i class="fas fa-tachometer-alt"></i> Panel de Administración</h2>
+      
+      <div class="filter-section">
+        <input type="date" id="admin-start-date">
+        <input type="date" id="admin-end-date">
+        <select id="admin-filter-type">
+          <option value="all">Todos los tipos</option>
+          <option value="organico">Orgánico</option>
+          <option value="inorganico">Inorgánico</option>
+          <option value="reciclable">Reciclable</option>
+          <option value="peligroso">Peligroso</option>
+        </select>
+        <input type="number" id="admin-min-weight" placeholder="Peso mínimo (kg)" min="0" step="0.1">
+        <input type="number" id="admin-max-weight" placeholder="Peso máximo (kg)" min="0" step="0.1">
+        <button onclick="filterAdminData()">Filtrar</button>
+      </div>
+      
+      <div class="chart-container">
+        <canvas id="adminRequestsChart"></canvas>
+      </div>
+      
+      <div class="section">
+        <h3><i class="fas fa-users"></i> Usuarios Registrados</h3>
+        <button onclick="addUserManually()" style="margin-bottom: 15px;"><i class="fas fa-plus"></i> Agregar Usuario</button>
+        <ul id="users-list"></ul>
+      </div>
+      
+      <div class="section">
+        <h3><i class="fas fa-building"></i> Empresas Recolectoras</h3>
+        <button onclick="addCompanyManually()" style="margin-bottom: 15px;"><i class="fas fa-plus"></i> Agregar Empresa</button>
+        <ul id="companies-list"></ul>
+      </div>
+      <div class="section">
+        <h3><i class="fas fa-list"></i> Todas las Solicitudes</h3>
+        <ul id="all-requests-list"></ul>
+      </div>
+      
+      <div class="filter-section">
+        <button onclick="exportUsersToPDF()">Exportar Usuarios (PDF)</button>
+        <button onclick="exportRequestsToExcel()">Exportar Solicitudes (Excel)</button>
+      </div>
+    </div>
+
+    <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Datos de ejemplo para simular la base de datos
+    const users = [
+      { id: 1, name: "Usuario Demo", email: "user@example.com", password: "123456", role: "user", phone: "1234567890", points: 150, whatsapp: true, status: 'active' },
+      { id: 2, name: "Empresa Demo", email: "company@example.com", password: "123456", role: "company", phone: "0987654321", whatsapp: true, status: 'active' },
+      { id: 3, name: "Admin Demo", email: "admin@example.com", password: "123456", role: "admin", phone: "5555555555", whatsapp: true, status: 'active' },
+      { id: 4, name: "Usuario 2", email: "user2@example.com", password: "123456", role: "user", phone: "1111111111", points: 75, whatsapp: false, status: 'active' }
+    ];
+    
+    let collectionRequests = [
+      { id: 1, userId: 1, date: "2025-05-15", type: "reciclable", weight: 5, points: 5, status: "completed", companyId: 2, vehicleId: 1 },
+      { id: 2, userId: 1, date: "2025-05-20", type: "organico", weight: 3, points: 3, status: "pending" }
+    ];
+
+    // Nuevos datos para vehículos
+    let vehicles = [
+      { id: 1, companyId: 2, plate: "ABC123", brand: "Toyota", model: "Hilux", capacity: 1500, type: "mediano", status: "active" },
+      { id: 2, companyId: 2, plate: "DEF456", brand: "Mercedes", model: "Atego", capacity: 5000, type: "grande", status: "active" }
+    ];
+
+    let currentUser = null;
+    let notificationInterval = null;
+    let currentEditingVehicleId = null;
+
+    // Implementación del patrón Factory Method para creación de usuarios
+    class UserFactory {
+      createUser(data) {
+        throw new Error("Método abstracto - debe ser implementado por subclases");
+      }
+    }
+    
+    class RegularUserFactory extends UserFactory {
+      createUser(data) {
+        return {
+          id: data.id,
+          name: data.name,
+          email: data.email,
+          password: data.password,
+          role: 'user',
+          phone: data.phone,
+          points: 0,
+          whatsapp: data.whatsapp || false,
+          status: 'active'
+        };
+      }
+    }
+    
+    class CompanyUserFactory extends UserFactory {
+      createUser(data) {
+        return {
+          id: data.id,
+          name: data.name,
+          email: data.email,
+          password: data.password,
+          role: 'company',
+          phone: data.phone,
+          whatsapp: data.whatsapp || false,
+          status: 'active'
+        };
+      }
+    }
+    
+    // Implementación del patrón Observer para notificaciones
+    class NotificationSystem {
+      constructor() {
+        this.observers = [];
+      }
+      
+      subscribe(observer) {
+        this.observers.push(observer);
+      }
+      
+      unsubscribe(observer) {
+        this.observers = this.observers.filter(obs => obs !== observer);
+      }
+      
+      notify(data) {
+        this.observers.forEach(observer => observer.update(data));
+      }
+    }
+    
+    class WhatsAppNotifier {
+      update(data) {
+        console.log(`Enviando notificación por WhatsApp a ${data.phone}: ${data.message}`);
+        // En producción, aquí se integraría con la API de WhatsApp
+        if (data.userId && users.some(u => u.id === data.userId && u.whatsapp)) {
+          Swal.fire({
+            title: "Notificación por WhatsApp",
+            text: data.message,
+            icon: "info"
+          });
+        }
+      }
+    }
+
+    // Crear instancias
+    const notificationSystem = new NotificationSystem();
+    const whatsappNotifier = new WhatsAppNotifier();
+    notificationSystem.subscribe(whatsappNotifier);
+    
+    // Funciones para gestión de vehículos
+    function showAddVehicleForm(vehicleId = null) {
+      currentEditingVehicleId = vehicleId;
+      const modal = document.getElementById('vehicle-modal');
+      const title = document.getElementById('vehicle-modal-title');
+      
+      if (vehicleId) {
+        title.textContent = "Editar Vehículo";
+        const vehicle = vehicles.find(v => v.id === vehicleId);
+        if (vehicle) {
+          document.getElementById('vehicle-plate').value = vehicle.plate;
+          document.getElementById('vehicle-brand').value = vehicle.brand;
+          document.getElementById('vehicle-model').value = vehicle.model;
+          document.getElementById('vehicle-capacity').value = vehicle.capacity;
+          document.getElementById('vehicle-type').value = vehicle.type;
+        }
+      } else {
+        title.textContent = "Añadir Nuevo Vehículo";
+        // Limpiar formulario
+        ['plate', 'brand', 'model', 'capacity'].forEach(field => {
+          document.getElementById(`vehicle-${field}`).value = '';
+        });
+        document.getElementById('vehicle-type').value = 'compacto';
+      }
+      
+      modal.classList.remove('hidden');
+    }
+    
+    function closeVehicleModal() {
+      document.getElementById('vehicle-modal').classList.add('hidden');
+      currentEditingVehicleId = null;
+    }
+    
+    function saveVehicle() {
+      const plate = document.getElementById('vehicle-plate').value;
+      const brand = document.getElementById('vehicle-brand').value;
+      const model = document.getElementById('vehicle-model').value;
+      const capacity = parseInt(document.getElementById('vehicle-capacity').value);
+      const type = document.getElementById('vehicle-type').value;
+      
+      if (!plate || !brand || !model || !capacity) {
+        Swal.fire("Error", "Por favor complete todos los campos", "error");
+        return;
+      }
+      
+      if (currentEditingVehicleId) {
+        // Editar vehículo existente
+        const index = vehicles.findIndex(v => v.id === currentEditingVehicleId);
+        if (index !== -1) {
+          vehicles[index] = {
+            ...vehicles[index],
+            plate,
+            brand,
+            model,
+            capacity,
+            type
+          };
+          Swal.fire("Éxito", "Vehículo actualizado correctamente", "success");
+        }
+      } else {
+        // Crear nuevo vehículo
+        const newVehicle = {
+          id: vehicles.length + 1,
+          companyId: currentUser.id,
+          plate,
+          brand,
+          model,
+          capacity,
+          type,
+          status: 'active'
+        };
+        vehicles.push(newVehicle);
+        Swal.fire("Éxito", "Vehículo añadido correctamente", "success");
+      }
+      
+      closeVehicleModal();
+      updateCompanySection();
+    }
+
+    function renderVehiclesList() {
+      const container = document.getElementById('vehicles-list');
+      container.innerHTML = '';
+      
+      const companyVehicles = vehicles.filter(v => v.companyId === currentUser.id);
+      
+      if (companyVehicles.length === 0) {
+        container.innerHTML = '<p>No hay vehículos registrados</p>';
+        return;
+      }
+      
+      companyVehicles.forEach(vehicle => {
+        const card = document.createElement('div');
+        card.className = 'vehicle-card';
+        
+        const statusClass = `status-${vehicle.status}`;
+        
+        card.innerHTML = `
+          <h4>${vehicle.brand} ${vehicle.model} <span class="status-badge ${statusClass}">${vehicle.status === 'active' ? 'Activo' : 'Inactivo'}</span></h4>
+          <div class="vehicle-property"><strong>Placa:</strong> ${vehicle.plate}</div>
+          <div class="vehicle-property"><strong>Capacidad:</strong> ${vehicle.capacity} kg</div>
+          <div class="vehicle-property"><strong>Tipo:</strong> ${vehicle.type}</div>
+          <div class="vehicle-actions">
+            <button onclick="showAddVehicleForm(${vehicle.id})">Editar</button>
+            <button onclick="toggleVehicleStatus(${vehicle.id})">${vehicle.status === 'active' ? 'Desactivar' : 'Activar'}</button>
+            <button onclick="deleteVehicle(${vehicle.id})">Eliminar</button>
+          </div>
+        `;
+        
+        container.appendChild(card);
+      });
+    }
+    
+    function toggleVehicleStatus(vehicleId) {
+      const vehicle = vehicles.find(v => v.id === vehicleId);
+      if (vehicle) {
+        vehicle.status = vehicle.status === 'active' ? 'inactive' : 'active';
+        updateCompanySection();
+        Swal.fire("Éxito", `Vehículo ${vehicle.status === 'active' ? 'activado' : 'desactivado'}`, "success");
+      }
+    }
+    
+    function deleteVehicle(vehicleId) {
+      Swal.fire({
+        title: "¿Eliminar vehículo?",
+        text: "Esta acción no se puede deshacer",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const index = vehicles.findIndex(v => v.id === vehicleId);
+          if (index !== -1) {
+            // Verificar si el vehículo está asignado a alguna solicitud
+            const isAssigned = collectionRequests.some(r => r.vehicleId === vehicleId);
+            
+            if (isAssigned) {
+              Swal.fire("Error", "No se puede eliminar un vehículo asignado a solicitudes", "error");
+            } else {
+              vehicles.splice(index, 1);
+              updateCompanySection();
+              Swal.fire("Éxito", "Vehículo eliminado correctamente", "success");
+            }
+          }
+        }
+      });
+    }
+
+    // Funciones para mostrar/ocultar páginas
+    function showLoginForm() {
+      document.getElementById('login-page').classList.remove('hidden');
+      document.getElementById('password-page').classList.add('hidden');
+      document.getElementById('register-page').classList.add('hidden');
+      document.getElementById('dashboard-container').classList.add('hidden');
+    }
+    
+    function showPasswordRecovery() {
+      document.getElementById('login-page').classList.add('hidden');
+      document.getElementById('password-page').classList.remove('hidden');
+    }
+    
+    function showRegisterForm() {
+      document.getElementById('login-page').classList.add('hidden');
+      document.getElementById('register-page').classList.remove('hidden');
+    }
+    
+    function showDashboard() {
+      document.getElementById('login-page').classList.add('hidden');
+      document.getElementById('password-page').classList.add('hidden');
+      document.getElementById('register-page').classList.add('hidden');
+      document.getElementById('dashboard-container').classList.remove('hidden');
+      
+      updateDashboard();
+    }
+
+    // Función de login
+    function login() {
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      const whatsappNotification = document.getElementById('whatsappNotification').checked;
+      
+      // Validación simple
+      if (!email || !password) {
+        Swal.fire("Error", "Por favor complete todos los campos", "error");
+        return;
+      }
+      
+      // Buscar usuario
+      const user = users.find(u => u.email === email && u.password === password);
+      
+      if (user) {
+        currentUser = user;
+        currentUser.whatsapp = whatsappNotification;
+        
+        Swal.fire({
+          title: "¡Bienvenido!",
+          text: `Has iniciado sesión como ${user.name}`,
+          icon: "success"
+        }).then(() => {
+          showDashboard();
+          
+          // Simular notificación por WhatsApp si está activado
+          if (whatsappNotification && user.phone) {
+            setTimeout(() => {
+              Swal.fire({
+                title: "Notificación por WhatsApp",
+                text: `Se ha enviado un código de verificación al número ${user.phone}`,
+                icon: "info"
+              });
+            }, 2000);
+          }
+        });
+      } else {
+        Swal.fire("Error", "Credenciales incorrectas", "error");
+      }
+    }
+
+    // Función de registro
+    function register() {
+      const name = document.getElementById('registerName').value;
+      const email = document.getElementById('registerEmail').value;
+      const password = document.getElementById('registerPassword').value;
+      const confirmPassword = document.getElementById('registerConfirmPassword').value;
+      const phone = document.getElementById('registerPhone').value;
+      const role = document.getElementById('registerRole').value;
+      const whatsappNotification = document.getElementById('registerWhatsappNotification').checked;
+      
+      // Validaciones
+      if (!name || !email || !password || !confirmPassword) {
+        Swal.fire("Error", "Por favor complete todos los campos obligatorios", "error");
+        return;
+      }
+      
+      if (password !== confirmPassword) {
+        Swal.fire("Error", "Las contraseñas no coinciden", "error");
+        return;
+      }
+      
+      if (users.some(u => u.email === email)) {
+        Swal.fire("Error", "Este correo ya está registrado", "error");
+        return;
+      }
+      
+      // Crear nuevo usuario
+      const newUser = {
+        id: users.length + 1,
+        name,
+        email,
+        password,
+        role,
+        phone,
+        points: 0,
+        whatsapp: whatsappNotification,
+        status: 'active'
+      };
+      
+      users.push(newUser);
+      
+      Swal.fire({
+        title: "¡Registro exitoso!",
+        text: `Bienvenido ${name}, ahora puedes iniciar sesión`,
+        icon: "success"
+      }).then(() => {
+        showLoginForm();
+      });
+    }
+
+    // Función para recuperar contraseña
+    function sendPasswordRecovery() {
+      const email = document.getElementById('recoveryEmail').value;
+      
+      if (!email) {
+        Swal.fire("Error", "Por favor ingrese su correo electrónico", "error");
+        return;
+      }
+      
+      if (!users.some(u => u.email === email)) {
+        Swal.fire("Error", "Este correo no está registrado", "error");
+        return;
+      }
+      
+      Swal.fire({
+        title: "Enlace enviado",
+        text: `Se ha enviado un enlace para restablecer la contraseña a ${email}`,
+        icon: "success"
+      }).then(() => {
+        showLoginForm();
+      });
+    }
+
+    // Función para cerrar sesión
+    function logout() {
+      currentUser = null;
+      clearInterval(notificationInterval);
+      showLoginForm();
+    }
+
+    // Actualizar dashboard según el rol del usuario
+    function updateDashboard() {
+      if (!currentUser) return;
+      
+      document.getElementById('welcome-message').textContent = `Bienvenido, ${currentUser.name}`;
+      document.getElementById('user-role-display').textContent = 
+        currentUser.role === 'user' ? 'Usuario' : 
+        currentUser.role === 'company' ? 'Empresa Recolectora' : 'Administrador';
+      
+      // Ocultar todas las secciones primero
+      document.getElementById('user-section').classList.add('hidden');
+      document.getElementById('company-section').classList.add('hidden');
+      document.getElementById('admin-section').classList.add('hidden');
+      
+      // Mostrar sección según el rol
+      if (currentUser.role === 'user') {
+        document.getElementById('user-section').classList.remove('hidden');
+        updateUserSection();
+      } else if (currentUser.role === 'company') {
+        document.getElementById('company-section').classList.remove('hidden');
+        updateCompanySection();
+      } else if (currentUser.role === 'admin') {
+        document.getElementById('admin-section').classList.remove('hidden');
+        updateAdminSection();
+      }
+      
+      // Iniciar notificaciones periódicas si está habilitado
+      if (currentUser.whatsapp) {
+        notificationInterval = setInterval(() => {
+          checkForNotifications();
+        }, 30000); // Cada 30 segundos (en producción sería por eventos reales)
+      }
+    }
+
+    // Actualizar sección de usuario
+    function updateUserSection() {
+      // Mostrar puntos acumulados
+      document.getElementById('total-points').textContent = currentUser.points;
+      
+      // Crear gráfico de puntos
+      const userRequests = collectionRequests.filter(r => r.userId === currentUser.id);
+      const ctx = document.getElementById('pointsChart').getContext('2d');
+      
+      // Destruir el gráfico anterior si existe
+      if (window.pointsChart) {
+        window.pointsChart.destroy();
+      }
+      
+      window.pointsChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: userRequests.map(r => r.date),
+          datasets: [{
+            label: 'Puntos obtenidos',
+            data: userRequests.map(r => r.points),
+            backgroundColor: '#2e7d32'
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+
+    // Actualizar sección de empresa
+    function updateCompanySection() {
+      // Mostrar solicitudes pendientes
+      const pendingRequests = collectionRequests.filter(r => r.status === 'pending');
+      const listElement = document.getElementById('pending-requests-list');
+      
+      listElement.innerHTML = '';
+      
+      if (pendingRequests.length === 0) {
+        listElement.innerHTML = '<li>No hay solicitudes pendientes</li>';
+      } else {
+        pendingRequests.forEach(request => {
+          const user = users.find(u => u.id === request.userId);
+          const li = document.createElement('li');
+          li.innerHTML = `
+            <div>
+              <strong>${user.name}</strong><br>
+              Fecha: ${request.date} | Tipo: ${getWasteTypeName(request.type)} | Peso: ${request.weight}kg
+            </div>
+            <button onclick="acceptRequest(${request.id})">Aceptar</button>
+          `;
+          listElement.appendChild(li);
+        });
+      }
+      
+      // Actualizar selector de solicitudes
+      const requestSelect = document.getElementById('request-select');
+      requestSelect.innerHTML = '<option value="">Seleccione una solicitud</option>';
+      
+      const companyRequests = collectionRequests.filter(r => r.companyId === currentUser.id && r.status === 'accepted');
+      companyRequests.forEach(request => {
+        const user = users.find(u => u.id === request.userId);
+        const option = document.createElement('option');
+        option.value = request.id;
+        option.textContent = `${user.name} - ${request.date} - ${getWasteTypeName(request.type)}`;
+        requestSelect.appendChild(option);
+      });
+      
+      // Crear gráfico de estadísticas
+      const ctx = document.getElementById('companyStatsChart').getContext('2d');
+      
+      new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: ['Completadas', 'Pendientes', 'Rechazadas'],
+          datasets: [{
+            data: [
+              collectionRequests.filter(r => r.companyId === currentUser.id && r.status === 'completed').length,
+              collectionRequests.filter(r => r.companyId === currentUser.id && r.status === 'accepted').length,
+              collectionRequests.filter(r => r.companyId === currentUser.id && r.status === 'rejected').length
+            ],
+            backgroundColor: ['#2e7d32', '#ffc107', '#f44336']
+          }]
+        }
+      });
+    }
+
+    function updateAdminSection() {
+  // Mostrar lista de usuarios
+  const usersList = document.getElementById('users-list');
+  usersList.innerHTML = '';
+  
+  users.filter(u => u.role === 'user').forEach(user => {
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <div>
+        <strong>${user.name}</strong> (${user.email})<br>
+        Teléfono: ${user.phone} | Puntos: ${user.points} | 
+        Estado: <span class="status-badge status-${user.status}">${user.status === 'active' ? 'Activo' : 'Inactivo'}</span>
+      </div>
+      <div>
+        <button onclick="editUser(${user.id})">Editar</button>
+        <button onclick="deleteUser(${user.id})">${user.status === 'active' ? 'Desactivar' : 'Activar'}</button>
+      </div>
+    `;
+    usersList.appendChild(li);
+  });
+  
+  // Mostrar lista de empresas
+  const companiesList = document.getElementById('companies-list');
+  companiesList.innerHTML = '';
+  
+  users.filter(u => u.role === 'company').forEach(company => {
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <div>
+        <strong>${company.name}</strong> (${company.email})<br>
+        Teléfono: ${company.phone} | 
+        Estado: <span class="status-badge status-${company.status}">${company.status === 'active' ? 'Activa' : 'Inactiva'}</span>
+      </div>
+      <div>
+        <button onclick="editCompany(${company.id})">Editar</button>
+        <button onclick="deleteCompany(${company.id})">${company.status === 'active' ? 'Desactivar' : 'Activar'}</button>
+      </div>
+    `;
+    companiesList.appendChild(li);
+  });
+  
+  // Mostrar todas las solicitudes
+  filterAdminData(); // Esto ahora maneja la visualización de solicitudes
+  
+  // Actualizar estadísticas
+  updateAdminStats(collectionRequests);
+}
+
+// Función auxiliar para actualizar estadísticas
+function updateAdminStats(requests) {
+  const ctx = document.getElementById('adminRequestsChart').getContext('2d');
+  
+  // Destruir gráfico anterior si existe
+  if (window.adminChart) {
+    window.adminChart.destroy();
+  }
+  
+  const types = ['organico', 'inorganico', 'reciclable', 'peligroso'];
+  
+  window.adminChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: types.map(getWasteTypeName),
+      datasets: [{
+        label: 'Solicitudes por tipo',
+        data: types.map(type => 
+          requests.filter(r => r.type === type).length
+        ),
+        backgroundColor: '#2e7d32'
+      }, {
+        label: 'Peso total (kg)',
+        data: types.map(type => 
+          requests.filter(r => r.type === type).reduce((sum, r) => sum + r.weight, 0)
+        ),
+        backgroundColor: '#81c784',
+        type: 'line',
+        yAxisID: 'y1'
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Cantidad de solicitudes'
+          }
+        },
+        y1: {
+          position: 'right',
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Peso total (kg)'
+          },
+          grid: {
+            drawOnChartArea: false
+          }
+        }
+      }
+    }
+  });
+}
+    // Función para crear solicitud de recolección
+    function createCollectionRequest() {
+      const date = document.getElementById('collectionDate').value;
+      const type = document.getElementById('wasteType').value;
+      const weight = parseFloat(document.getElementById('wasteWeight').value);
+      
+      if (!date || !type || !weight || weight <= 0) {
+        Swal.fire("Error", "Por favor complete todos los campos correctamente", "error");
+        return;
+      }
+      
+      // Calcular puntos según el tipo de residuo (Strategy pattern)
+      const points = calculatePoints(type, weight);
+      
+      const newRequest = {
+        id: collectionRequests.length + 1,
+        userId: currentUser.id,
+        date,
+        type,
+        weight,
+        points,
+        status: 'pending'
+      };
+      
+      collectionRequests.push(newRequest);
+      
+      // Actualizar puntos del usuario
+      currentUser.points += points;
+      
+      Swal.fire({
+        title: "¡Solicitud creada!",
+        text: `Se ha creado tu solicitud para el ${date}. Puntos ganados: ${points}`,
+        icon: "success"
+      }).then(() => {
+        updateUserSection();
+        
+        // Simular notificación a empresas
+        if (currentUser.whatsapp) {
+          setTimeout(() => {
+            Swal.fire({
+              title: "Notificación por WhatsApp",
+              text: "Las empresas recolectoras han sido notificadas de tu solicitud",
+              icon: "info"
+            });
+          }, 2000);
+        }
+      });
+    }
+
+    // Función para aceptar solicitud (empresa)
+    function acceptRequest(requestId) {
+      const request = collectionRequests.find(r => r.id === requestId);
+      
+      if (request) {
+        request.status = 'accepted';
+        request.companyId = currentUser.id;
+        
+        Swal.fire({
+          title: "Solicitud aceptada",
+          text: "Has aceptado esta solicitud de recolección",
+          icon: "success"
+        }).then(() => {
+          updateCompanySection();
+          
+          // Notificar al usuario
+          const user = users.find(u => u.id === request.userId);
+          if (user && user.whatsapp) {
+            setTimeout(() => {
+              Swal.fire({
+                title: "Notificación por WhatsApp",
+                text: `La empresa ${currentUser.name} ha aceptado tu solicitud para el ${request.date}`,
+                icon: "info"
+              });
+            }, 2000);
+          }
+        });
+      }
+    }
+
+    // Funciones para gestión de usuarios por empresas
+    function searchUsers() {
+      const searchTerm = document.getElementById('user-search').value.toLowerCase();
+      const managedUsersList = document.getElementById('managed-users-list');
+      managedUsersList.innerHTML = '';
+      
+      let filteredUsers = users.filter(u => 
+        u.role === 'user' && 
+        u.status === 'active' && 
+        (u.name.toLowerCase().includes(searchTerm) || 
+         u.email.toLowerCase().includes(searchTerm))
+      );
+      
+      if (filteredUsers.length === 0) {
+        managedUsersList.innerHTML = '<li>No se encontraron usuarios</li>';
+        return;
+      }
+      
+      filteredUsers.forEach(user => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <div>
+            <strong>${user.name}</strong> (${user.email})<br>
+            Teléfono: ${user.phone} | Puntos: ${user.points}
+          </div>
+          <button onclick="deleteUser(${user.id})">Eliminar</button>
+        `;
+        managedUsersList.appendChild(li);
+      });
+    }
+    
+    // Función para eliminar usuario
+function deleteUser(userId) {
+  Swal.fire({
+    title: '¿Eliminar usuario?',
+    text: "Esta acción cambiará el estado a inactivo pero mantendrá los datos históricos.",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    confirmButtonText: 'Sí, desactivar',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const user = users.find(u => u.id === userId);
+      if (user) {
+        user.status = 'inactive';
+        updateAdminSection();
+        Swal.fire('¡Desactivado!', 'El usuario ha sido marcado como inactivo.', 'success');
+      }
+    }
+  });
+}
+
+// Función para agregar usuario manualmente
+function addUserManually() {
+  Swal.fire({
+    title: 'Agregar Nuevo Usuario',
+    html: `
+      <input type="text" id="new-user-name" class="swal2-input" placeholder="Nombre completo" required>
+      <input type="email" id="new-user-email" class="swal2-input" placeholder="Email" required>
+      <input type="password" id="new-user-password" class="swal2-input" placeholder="Contraseña" required>
+      <input type="tel" id="new-user-phone" class="swal2-input" placeholder="Teléfono">
+      <input type="number" id="new-user-points" class="swal2-input" placeholder="Puntos iniciales" value="0">
+      <select id="new-user-role" class="swal2-select">
+        <option value="user">Usuario</option>
+        <option value="company">Empresa</option>
+        <option value="admin">Administrador</option>
+      </select>
+      <label><input type="checkbox" id="new-user-whatsapp" checked> WhatsApp</label>
+    `,
+    showCancelButton: true,
+    confirmButtonText: 'Registrar',
+    cancelButtonText: 'Cancelar',
+    preConfirm: () => {
+      return {
+        name: document.getElementById('new-user-name').value,
+        email: document.getElementById('new-user-email').value,
+        password: document.getElementById('new-user-password').value,
+        phone: document.getElementById('new-user-phone').value,
+        points: parseInt(document.getElementById('new-user-points').value) || 0,
+        role: document.getElementById('new-user-role').value,
+        whatsapp: document.getElementById('new-user-whatsapp').checked,
+        status: 'active'
+      };
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const newUser = {
+        id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
+        ...result.value
+      };
+      
+      users.push(newUser);
+      updateAdminSection();
+      Swal.fire('¡Registrado!', 'El nuevo usuario ha sido creado.', 'success');
+    }
+  });
+}
+
+// Función para editar empresa
+function editCompany(companyId) {
+  const company = users.find(u => u.id === companyId && u.role === 'company');
+  if (!company) return;
+
+  Swal.fire({
+    title: `Editar Empresa: ${company.name}`,
+    html: `
+      <input type="text" id="edit-company-name" value="${company.name}" class="swal2-input" placeholder="Nombre">
+      <input type="email" id="edit-company-email" value="${company.email}" class="swal2-input" placeholder="Email">
+      <input type="tel" id="edit-company-phone" value="${company.phone}" class="swal2-input" placeholder="Teléfono">
+      <select id="edit-company-status" class="swal2-select">
+        <option value="active" ${company.status === 'active' ? 'selected' : ''}>Activa</option>
+        <option value="inactive" ${company.status === 'inactive' ? 'selected' : ''}>Inactiva</option>
+      </select>
+      <label><input type="checkbox" id="edit-company-whatsapp" ${company.whatsapp ? 'checked' : ''}> WhatsApp</label>
+    `,
+    showCancelButton: true,
+    confirmButtonText: 'Guardar',
+    cancelButtonText: 'Cancelar',
+    preConfirm: () => {
+      return {
+        name: document.getElementById('edit-company-name').value,
+        email: document.getElementById('edit-company-email').value,
+        phone: document.getElementById('edit-company-phone').value,
+        status: document.getElementById('edit-company-status').value,
+        whatsapp: document.getElementById('edit-company-whatsapp').checked
+      };
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Object.assign(company, result.value);
+      updateAdminSection();
+      Swal.fire('¡Actualizado!', 'La empresa ha sido modificada.', 'success');
+    }
+  });
+}
+
+// Función para eliminar empresa
+function deleteCompany(companyId) {
+  Swal.fire({
+    title: '¿Desactivar empresa?',
+    text: "Esta acción cambiará el estado a inactivo pero mantendrá los datos históricos.",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    confirmButtonText: 'Sí, desactivar',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const company = users.find(u => u.id === companyId);
+      if (company) {
+        company.status = 'inactive';
+        updateAdminSection();
+        Swal.fire('¡Desactivada!', 'La empresa ha sido marcada como inactiva.', 'success');
+      }
+    }
+  });
+}
+
+// Función para agregar empresa manualmente
+function addCompanyManually() {
+  Swal.fire({
+    title: 'Agregar Nueva Empresa',
+    html: `
+      <input type="text" id="new-company-name" class="swal2-input" placeholder="Nombre de la empresa" required>
+      <input type="email" id="new-company-email" class="swal2-input" placeholder="Email" required>
+      <input type="password" id="new-company-password" class="swal2-input" placeholder="Contraseña" required>
+      <input type="tel" id="new-company-phone" class="swal2-input" placeholder="Teléfono" required>
+      <label><input type="checkbox" id="new-company-whatsapp" checked> WhatsApp</label>
+    `,
+    showCancelButton: true,
+    confirmButtonText: 'Registrar',
+    cancelButtonText: 'Cancelar',
+    preConfirm: () => {
+      return {
+        name: document.getElementById('new-company-name').value,
+        email: document.getElementById('new-company-email').value,
+        password: document.getElementById('new-company-password').value,
+        phone: document.getElementById('new-company-phone').value,
+        whatsapp: document.getElementById('new-company-whatsapp').checked,
+        role: 'company',
+        status: 'active'
+      };
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const newCompany = {
+        id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
+        ...result.value
+      };
+      
+      users.push(newCompany);
+      updateAdminSection();
+      Swal.fire('¡Registrada!', 'La nueva empresa ha sido creada.', 'success');
+    }
+  });
+}
+            /* Notificar al usuario
+            notificationSystem.notify({
+              userId: user.id,
+              phone: user.phone,
+              message: `Su cuenta en ARDI-MI ha sido desactivada por la empresa ${currentUser.name}. Contacte al administrador para más información.`
+            });
+            
+            Swal.fire("Éxito", "Usuario desactivado correctamente", "success");
+          }
+        }
+      });
+    }*/
+    
+    // Modificación en la función acceptRequest para asignar vehículo
+    function acceptRequest(requestId) {
+      const request = collectionRequests.find(r => r.id === requestId);
+      
+      if (request) {
+        // Mostrar selector de vehículos disponibles
+        const availableVehicles = vehicles.filter(v => 
+          v.companyId === currentUser.id && 
+          v.status === 'active' &&
+          (v.type === 'especial' || request.type !== 'peligroso')
+        );
+        
+        if (availableVehicles.length === 0) {
+          Swal.fire("Error", "No hay vehículos disponibles para este tipo de residuo", "error");
+          return;
+        }
+        
+        let vehicleOptions = availableVehicles.map(v => 
+          `<option value="${v.id}">${v.plate} - ${v.brand} ${v.model} (Capacidad: ${v.capacity}kg)</option>`
+        ).join('');
+        
+        Swal.fire({
+          title: "Asignar vehículo",
+          html: `
+            <p>Seleccione el vehículo para esta recolección:</p>
+            <select id="vehicle-assignment" class="swal2-select">
+              ${vehicleOptions}
+            </select>
+          `,
+          showCancelButton: true,
+          confirmButtonText: "Aceptar solicitud",
+          cancelButtonText: "Cancelar",
+          preConfirm: () => {
+            return {
+              vehicleId: parseInt(document.getElementById('vehicle-assignment').value)
+            };
+          }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            request.status = 'accepted';
+            request.companyId = currentUser.id;
+            request.vehicleId = result.value.vehicleId;
+            
+            Swal.fire({
+              title: "Solicitud aceptada",
+              text: "Has aceptado esta solicitud de recolección",
+              icon: "success"
+            }).then(() => {
+              updateCompanySection();
+              
+              // Notificar al usuario
+              const user = users.find(u => u.id === request.userId);
+              if (user && user.whatsapp) {
+                const vehicle = vehicles.find(v => v.id === request.vehicleId);
+                notificationSystem.notify({
+                  userId: user.id,
+                  phone: user.phone,
+                  message: `La empresa ${currentUser.name} ha aceptado tu solicitud para el ${request.date}. Vehículo asignado: ${vehicle.plate} (${vehicle.brand} ${vehicle.model})`
+                });
+              }
+            });
+          }
+        });
+      }
+    }
+
+    // Función para registrar recolección (empresa)
+    function registerCollection() {
+      const requestId = parseInt(document.getElementById('request-select').value);
+      const weight = parseFloat(document.getElementById('collected-weight').value);
+      
+      if (!requestId || !weight || weight <= 0) {
+        Swal.fire("Error", "Por favor complete todos los campos correctamente", "error");
+        return;
+      }
+      
+      const request = collectionRequests.find(r => r.id === requestId);
+      
+      if (request) {
+        request.status = 'completed';
+        request.weight = weight;
+        
+        // Recalcular puntos con el peso real
+        request.points = calculatePoints(request.type, weight);
+        
+        Swal.fire({
+          title: "¡Recolección registrada!",
+          text: `Has registrado la recolección de ${weight}kg`,
+          icon: "success"
+        }).then(() => {
+          updateCompanySection();
+          
+          // Notificar al usuario
+          const user = users.find(u => u.id === request.userId);
+          if (user && user.whatsapp) {
+            setTimeout(() => {
+              Swal.fire({
+                title: "Notificación por WhatsApp",
+                text: `La empresa ${currentUser.name} ha registrado la recolección de tus residuos. Puntos obtenidos: ${request.points}`,
+                icon: "info"
+              });
+            }, 2000);
+          }
+        });
+      }
+    }
+
+    // Función para filtrar datos en el panel de administración
+    function filterAdminData() {
+  const startDate = document.getElementById('admin-start-date').value;
+  const endDate = document.getElementById('admin-end-date').value;
+  const filterType = document.getElementById('admin-filter-type').value;
+  const minWeight = parseFloat(document.getElementById('admin-min-weight').value) || 0;
+  const maxWeight = parseFloat(document.getElementById('admin-max-weight').value) || Infinity;
+  
+  let filteredRequests = [...collectionRequests];
+  
+  if (startDate) {
+    filteredRequests = filteredRequests.filter(r => r.date >= startDate);
+  }
+  
+  if (endDate) {
+    filteredRequests = filteredRequests.filter(r => r.date <= endDate);
+  }
+  
+  if (filterType !== 'all') {
+    filteredRequests = filteredRequests.filter(r => r.type === filterType);
+  }
+  
+  // Filtrar por rango de peso
+  filteredRequests = filteredRequests.filter(r => 
+    r.weight >= minWeight && r.weight <= maxWeight
+  );
+  
+  // Actualizar la lista de solicitudes
+  const allRequestsList = document.getElementById('all-requests-list');
+  allRequestsList.innerHTML = '';
+  
+  filteredRequests.forEach(request => {
+    const user = users.find(u => u.id === request.userId);
+    const company = request.companyId ? users.find(u => u.id === request.companyId) : null;
+    
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <div>
+        <strong>${user.name}</strong><br>
+        Fecha: ${request.date} | Tipo: ${getWasteTypeName(request.type)} | 
+        Peso: ${request.weight}kg | Puntos: ${request.points}<br>
+        Estado: ${getStatusName(request.status)} 
+        ${company ? `| Empresa: ${company.name}` : ''}
+      </div>
+      <button onclick="editRequest(${request.id})">Editar</button>
+      <button onclick="deleteRequest(${request.id})">Eliminar</button>
+    `;
+    allRequestsList.appendChild(li);
+  });
+  
+  // Actualizar estadísticas
+  updateAdminStats(filteredRequests);
+}
+
+    // Función para calcular puntos (Strategy pattern)
+    function calculatePoints(type, weight) {
+      const strategies = {
+        organico: w => Math.floor(w * 0.8),    // 0.8 puntos/kg
+        inorganico: w => Math.floor(w * 0.5),  // 0.5 puntos/kg
+        reciclable: w => Math.floor(w * 1),    // 1 punto/kg
+        peligroso: w => Math.floor(w * 2)      // 2 puntos/kg
+      };
+      
+      return strategies[type] ? strategies[type](weight) : 0;
+    }
+
+    // Función para verificar notificaciones
+    function checkForNotifications() {
+      if (currentUser.role === 'user') {
+        // Verificar si hay actualizaciones en las solicitudes
+        const userRequests = collectionRequests.filter(r => r.userId === currentUser.id);
+        const updatedRequests = userRequests.filter(r => {
+          if (r.status === 'accepted' && !r.notified) {
+            r.notified = true;
+            return true;
+          }
+          return false;
+        });
+        
+        if (updatedRequests.length > 0 && currentUser.whatsapp) {
+          Swal.fire({
+            title: "Nueva notificación",
+            text: `Tienes ${updatedRequests.length} solicitudes aceptadas por empresas recolectoras`,
+            icon: "info"
+          });
+        }
+      } else if (currentUser.role === 'company') {
+        // Verificar nuevas solicitudes
+        const newRequests = collectionRequests.filter(r => 
+          r.status === 'pending' && !r.notified
+        );
+        
+        if (newRequests.length > 0 && currentUser.whatsapp) {
+          newRequests.forEach(r => r.notified = true);
+          
+          Swal.fire({
+            title: "Nuevas solicitudes",
+            text: `Hay ${newRequests.length} nuevas solicitudes de recolección disponibles`,
+            icon: "info"
+          });
+        }
+      }
+    }
+
+    // Funciones de ayuda
+    function getWasteTypeName(type) {
+      const names = {
+        organico: 'Orgánico',
+        inorganico: 'Inorgánico',
+        reciclable: 'Reciclable',
+        peligroso: 'Peligroso'
+      };
+      return names[type] || type;
+    }
+    
+    function getStatusName(status) {
+      const names = {
+        pending: 'Pendiente',
+        accepted: 'Aceptada',
+        completed: 'Completada',
+        rejected: 'Rechazada'
+      };
+      return names[status] || status;
+    }
+    
+    // Función para exportar usuarios a PDF
+function exportUsersToPDF() {
+  // Filtrar solo usuarios (no empresas ni admins)
+  const usersToExport = users.filter(u => u.role === 'user');
+  
+  // Crear contenido del PDF
+  let content = [
+    ['ID', 'Nombre', 'Email', 'Teléfono', 'Puntos', 'Estado']
+  ];
+  
+  usersToExport.forEach(user => {
+    content.push([
+      user.id,
+      user.name,
+      user.email,
+      user.phone,
+      user.points,
+      user.status === 'active' ? 'Activo' : 'Inactivo'
+    ]);
+  });
+  
+  // Simular generación de PDF (en un caso real usarías una librería como jsPDF)
+  const blob = new Blob([content.map(row => row.join(',')).join('\n')], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  
+  // Crear enlace de descarga
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'usuarios_ardimi.pdf';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  
+  Swal.fire('PDF Generado', 'El reporte de usuarios se ha descargado.', 'success');
+}
+
+// Función para exportar solicitudes a Excel
+function exportRequestsToExcel() {
+  // Obtener todas las solicitudes
+  let content = [
+    ['ID', 'Usuario', 'Fecha', 'Tipo', 'Peso (kg)', 'Puntos', 'Estado', 'Empresa']
+  ];
+  
+  collectionRequests.forEach(request => {
+    const user = users.find(u => u.id === request.userId);
+    const company = request.companyId ? users.find(u => u.id === request.companyId) : null;
+    
+    content.push([
+      request.id,
+      user ? user.name : 'Desconocido',
+      request.date,
+      getWasteTypeName(request.type),
+      request.weight,
+      request.points,
+      getStatusName(request.status),
+      company ? company.name : 'N/A'
+    ]);
+  });
+  
+  // Simular generación de Excel (en un caso real usarías una librería como SheetJS)
+  const blob = new Blob([content.map(row => row.join(',')).join('\n')], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  
+  // Crear enlace de descarga
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'solicitudes_ardimi.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  
+  Swal.fire('Excel Generado', 'El reporte de solicitudes se ha descargado.', 'success');
+}
+    
+    // Función para mostrar formulario de edición de usuario
+    function editUser(userId) {
+    const user = users.find(u => u.id === userId);
+      if (!user) return;
+
+    Swal.fire({
+    title: `Editar Usuario: ${user.name}`,
+    html: `
+      <input type="text" id="edit-user-name" value="${user.name}" class="swal2-input" placeholder="Nombre">
+      <input type="email" id="edit-user-email" value="${user.email}" class="swal2-input" placeholder="Email">
+      <input type="tel" id="edit-user-phone" value="${user.phone}" class="swal2-input" placeholder="Teléfono">
+      <input type="number" id="edit-user-points" value="${user.points}" class="swal2-input" placeholder="Puntos">
+      <select id="edit-user-status" class="swal2-select">
+        <option value="active" ${user.status === 'active' ? 'selected' : ''}>Activo</option>
+        <option value="inactive" ${user.status === 'inactive' ? 'selected' : ''}>Inactivo</option>
+      </select>
+      <label><input type="checkbox" id="edit-user-whatsapp" ${user.whatsapp ? 'checked' : ''}> WhatsApp</label>
+    `,
+    showCancelButton: true,
+    confirmButtonText: 'Guardar',
+    cancelButtonText: 'Cancelar',
+    preConfirm: () => {
+      return {
+        name: document.getElementById('edit-user-name').value,
+        email: document.getElementById('edit-user-email').value,
+        phone: document.getElementById('edit-user-phone').value,
+        points: parseInt(document.getElementById('edit-user-points').value),
+        status: document.getElementById('edit-user-status').value,
+        whatsapp: document.getElementById('edit-user-whatsapp').checked
+      };
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Object.assign(user, result.value);
+      updateAdminSection();
+      Swal.fire('¡Actualizado!', 'El usuario ha sido modificado.', 'success');
+    }
+  });
+}
+
+    // Actualización de la sección de empresa para incluir vehículos
+    function updateCompanySection() {
+      // Código existente...
+      renderVehiclesList();
+      searchUsers(); // Cargar lista de usuarios inicial
+    }
+
+    // Inicializar la aplicación mostrando el login
+    showLoginForm();
+  </script>
+</body>
+</html>
