@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class CollectionRequest extends Model
 {
-    //Generate the migration for this model
+    use HasFactory;
+
     protected $fillable = [
-        'user_id', 'company_id', 'vehicle_id', 'date', 'type', 
-        'weight', 'points', 'status', 'notified'
+        'user_id', 'company_id', 'vehicle_id', 'date', 'type', 'weight', 'points', 'status'
     ];
 
     public function user()

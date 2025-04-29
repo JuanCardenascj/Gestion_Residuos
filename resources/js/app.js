@@ -5,7 +5,8 @@ import Chart from 'chart.js/auto';
 
 window.Swal = Swal;
 window.Chart = Chart;
-// 1. Funciones de utilidad
+
+ // 1. Funciones de utilidad
 const utils = {
     validateEmail: (email) => {
       const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
